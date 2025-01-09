@@ -54,6 +54,14 @@ O sistema foi projetado para ser modular e escalável. Aqui está uma visão ger
         |                      |           |                   |       |                               |
         ' ----- Contém --------'           ' ----- Possui ---- '       ' ----- Está Classifcado em: ---'
 
+# **Instalação** 
+ 1. Instalar Nodejs;
+ 2. Instalar o gerenciador de pacotes yarn;
+ 3. Entre no projeto e rode : `yarn` para instalar as dependências;
+ 
+# **Executar** 
+ 1. Faça o build com `yarn build`
+ 2. Execute com `yarn start`
                   
                                
                                                     
