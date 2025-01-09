@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public', 'index.html'), // Caminho correto para o arquivo HTML
+      template: path.resolve(__dirname, 'dist', 'index.html'), // Caminho correto para o arquivo HTML
     }),
   ],
   devServer: {
