@@ -25,23 +25,23 @@ const rows = [
 const Listar = () => {
   const navigate = useNavigate();
 
-  const handleClick = ( id) => {
+  const handleClick = (id) => {
     navigate(`/pad/${id}`);
   };
   // Estado para armazenar o número de cliques
   //const [clickCount, setClickCount] = useState('');
 
   // Função para lidar com o clique no botão
- /* const handleClick = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/greet/sabrina`);
-      const data = await response.json();
-      console.log(data)
-      setClickCount(data.message);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };*/
+  /* const handleClick = async () => {
+     try {
+       const response = await fetch(`http://localhost:3000/api/greet/sabrina`);
+       const data = await response.json();
+       console.log(data)
+       setClickCount(data.message);
+     } catch (error) {
+       console.error('Error fetching data:', error);
+     }
+   };*/
 
   return (
     <TableContainer component={Paper}>
@@ -65,7 +65,7 @@ const Listar = () => {
                 {row.title}
               </TableCell>
               <TableCell align="right">{row.subject}</TableCell>
-              <TableCell align="right"><IconButton aria-label="Jogar" size="small" onClick={()=>handleClick(row.id)}>
+              <TableCell align="right"><IconButton aria-label="Jogar" size="small" onClick={() => handleClick(row.id)}>
                 <PlayArrowIcon fontSize="small" />
               </IconButton></TableCell>
               <TableCell align="right"><IconButton aria-label="Editar" size="small">

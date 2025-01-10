@@ -9,16 +9,16 @@ const port = 3000;
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Rota principal
-app.get(['/','/pad'], (req, res) => {
+app.get(['/', '/pad', '/pad/:id'], (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.get('/api/greet/:name', (req, res) => {
-    const name = req.params.name;
-    const greeting = myclass.greet(name); // Chama a função C++
-    res.json({ message: greeting });
+  const name = req.params.name;
+  const greeting = myclass.greet(name); // Chama a função C++
+  res.json({ message: greeting });
 });
 
 app.listen(port, () => {
-    console.log(`API running on http://localhost:${port}`);
+  console.log(`API running on http://localhost:${port}`);
 });
