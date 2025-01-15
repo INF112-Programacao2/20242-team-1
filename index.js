@@ -9,7 +9,7 @@ const port = 3000;
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Rota principal
-app.get(['/', '/pad', '/pad/:id'], (req, res) => {
+app.get(['/', '/pad', '/pad/:id','/settings'], (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

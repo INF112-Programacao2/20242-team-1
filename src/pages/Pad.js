@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Container } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 let cards = [{ id: 1, front: "Frente 1", back: "Verso 1", pad_id: 1, level_time_id: 1, last_review: new Date() },
 { id: 2, front: "Frente 2", back: "Verso 2", pad_id: 2, level_time_id: 2, last_review: new Date() },
@@ -57,34 +54,31 @@ const Pad = () => {
     }
 
     return (
-        <Container maxWidth="xm" sx={{
-            height: "90%",
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            gap: '2vh',
-            padding: '2vh'
-        }}>
+        <Container>
             {finish ?
-                <Typography variant="h5" component="div">
-                    Não há mais revisões !
-                </Typography> : <> <Card sx={{ minWidth: '70vw', minHeight: '70vh' }}>
-                    <CardContent>
-                        <Typography variant="h5" component="div">
-                            {card.front ?? ""}
-                        </Typography>
-                    </CardContent>
-                    {visibleBack && <CardContent>
-                        <Typography variant="h6" component="div">
-                            {card.back ?? ""}
-                        </Typography>
-                    </CardContent>}
+                <h5>Não há mais revisões !</h5>
+                : <> <Card
+                    bg="LIGHT"
+                    key="Light"
+                    text="Light"
+                    style={{ width: '18rem' }}
+                    className="mb-2">
+                    <Card.Body>
+                        <Card.Title>
+                            <h5>
+                                {card.front ?? ""}
+                            </h5>
+                        </Card.Title>
+                        {visibleBack && <Card.Text>
+                            <h6>{card.back ?? ""}</h6>
+                        </Card.Text>}
+                    </Card.Body>
                 </Card>
-                    {visibleBack ? <ButtonGroup variant="contained" aria-label="Basic button group">
-                        <Button onClick={() => nextCard(cards)}> <NavigateNextIcon></NavigateNextIcon></Button>
+                    {visibleBack ? <ButtonGroup aria-label="Basic button group">
+                        <Button variant="secondary" onClick={() => nextCard(cards)}> Next</Button>
                     </ButtonGroup> : <ButtonGroup variant="contained" aria-label="Basic button group">
                         {levelTime.map((level) => {
-                            return <Button key={level.id} onClick={() => setVsibleBackFinish(true)}>{level.title}</Button>
+                            return <Button variant="secondary" key={level.id} onClick={() => setVsibleBackFinish(true)}>{level.title}</Button>
                         })}
                     </ButtonGroup>}
                 </>

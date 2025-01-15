@@ -1,16 +1,11 @@
 import React from 'react';
-import Container from '@mui/material/Container';
-
+import { Container } from 'react-bootstrap';
 
 const Home = () => {
   return (
-      <Container maxWidth="xm" sx={{
-        gap: "10px",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
-    
-      </Container>
+    <Container>
+
+    </Container>
   );
 };
 

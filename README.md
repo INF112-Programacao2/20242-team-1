@@ -73,7 +73,9 @@ Uma aplicação simples e intuitiva para estudo e memorização baseada no conce
 
 2. Execute com `yarn start`
 
-3. Acesse '`http://localhost:3000`
+3. Para executar sem interromper utilize `yarn dev`
+
+4. Acesse '`http://localhost:3000`
 
 ### **Estrutura de Pastas**
 |Pasta|Função  |

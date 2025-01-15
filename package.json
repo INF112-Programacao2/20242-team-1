@@ -9,16 +9,25 @@
     "@babel/preset-react": "^7.26.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.3.1",
-    "@mui/material": "^6.3.1",
+    "@svgr/webpack": "^8.1.0",
     "babel-loader": "^9.2.1",
+    "bootstrap": "^5.3.3",
+    "css-loader": "^7.1.2",
     "express": "^4.21.2",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.3",
     "node-addon-api": "^8.3.0",
+    "nodemon": "^3.1.9",
     "react": "^19.0.0",
+    "react-bootstrap": "^2.10.7",
+    "react-devtools": "^6.0.1",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
+    "sass": "^1.83.4",
+    "sass-loader": "^16.0.4",
+    "style-loader": "^4.0.0",
     "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
   },
@@ -30,6 +39,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "node-gyp configure && node-gyp build && webpack --mode development"
+    "build": "node-gyp configure && node-gyp build && webpack --mode development",
+    "dev": "nodemon --watch src --exec \"node-gyp configure && node-gyp build && webpack --mode development && node index.js\""
   }
 }

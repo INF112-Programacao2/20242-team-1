@@ -1,20 +1,12 @@
 import React from 'react';
-import Container from '@mui/material/Container';
-import Listar from '../components/Listar'
-import Typography from '@mui/material/Typography';
-
+import PadsList from '../components/PadsList'
+import { Container } from 'react-bootstrap';
 
 const PadsPage = () => {
     return (
-        <Container maxWidth="xm" sx={{
-            gap: "10px",
-            justifyContent: "center",
-            alignItems: "center",
-        }}>
-            <Typography variant="h2" align="center" color='#0009' gutterBottom>
-                Baralhos
-            </Typography>
-            <Listar />
+        <Container fluid="xl">
+            <h2>Baralhos</h2>
+            <PadsList />
         </Container>
     );
 };
