@@ -13,8 +13,17 @@ module.exports = {
     rules: [
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
-        include: [path.resolve(__dirname, 'src/assets/icons')],
+        use: [
+          {
+            loader: '@svgr/webpack',
+          },
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/icons/[name].[hash].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.(js|jsx)$/,
