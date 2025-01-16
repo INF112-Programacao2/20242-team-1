@@ -1,65 +1,61 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
+    clean: true,
   },
   module: {
     rules: [
-      {
-        test: /\.svg$/,
-        use: ['@svgr/webpack'],
-        include: [path.resolve(__dirname, 'src/assets/icons')],
-      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: 'babel-loader',
       },
       {
-        test: /\.scss$/, // Aplica a regra a arquivos .scss
-        use: [
-          'style-loader', // Insere o CSS no DOM
-          'css-loader',   // Processa os arquivos CSS
-          'sass-loader',  // Converte SCSS para CSS
-        ],
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.css$/, // Para arquivos CSS
-        use: [
-          'style-loader', // Insere o CSS no DOM
-          'css-loader',   // Processa o CSS
-        ],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'dist', 'index.html'), // Caminho correto para o arquivo HTML
+      template: path.resolve(__dirname, 'public', 'index.html'),
+      filename: 'index.html',
+      inject: 'body',
     }),
-    // new BundleAnalyzerPlugin(),
-
   ],
-  devServer: {
-    static: path.resolve(__dirname, 'dist'),
-    port: 3000,
-    hot: true,        // Habilitar Hot Module Replacement (HMR)
-    open: true,
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   resolve: {
     extensions: ['.js', '.jsx', '.scss', '.css'],
-    alias: {
-      '@emotion/react': require.resolve('@emotion/react'),
-    },
   },
-  optimization: {
-    usedExports: true, // Remove código não utilizado
-    minimize: true     // Minifica o bundle
-  }
-
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    port: 3000,
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+  },
 };
