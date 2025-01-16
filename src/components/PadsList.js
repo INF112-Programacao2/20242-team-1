@@ -2,7 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table } from 'react-bootstrap';
-
+import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
+import { ReactComponent as EditIcon} from '../assets/icons/edit.svg';
+import { ReactComponent as PlayIcon} from '../assets/icons/play.svg';
 //Exemplo de dados que vamos receber do backend
 const rows = [
   { title: 'title', subject: 'subject', id: 1 },
@@ -58,9 +60,9 @@ const PadsList = () => {
           <tr key={idx}>
             <td>{row.title}</td>
             <td>{row.subject}</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><PlayIcon/></td>
+            <td><EditIcon/></td>
+            <td><TrashIcon/></td>
           </tr>
         ))}
       </tbody>

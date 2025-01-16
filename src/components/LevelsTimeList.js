@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
 
 
 import Table from 'react-bootstrap/Table';
@@ -33,9 +34,7 @@ const LevelsTimeList = () => {
                 {row.name}
               </td>
               <td>Edit<i className="bi bi-pen"></i></td>
-              <td>
-                <i className="bi bi-trash-fill"></i>
-              </td>
+              <td><TrashIcon/></td>
             </tr>
           ))}
         </tbody>
