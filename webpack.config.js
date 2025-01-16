@@ -41,6 +41,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'dist', 'index.html'), // Caminho correto para o arquivo HTML
+      inject: false,
     }),
     // new BundleAnalyzerPlugin(),
 
