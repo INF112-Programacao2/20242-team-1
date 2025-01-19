@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
-import { ReactComponent as EditIcon} from '../assets/icons/edit.svg';
-import { ReactComponent as PlayIcon} from '../assets/icons/play.svg';
+import { ReactComponent as EditIcon } from '../assets/icons/edit.svg';
+import { ReactComponent as PlayIcon } from '../assets/icons/play.svg';
 //Exemplo de dados que vamos receber do backend
 const rows = [
   { title: 'title', subject: 'subject', id: 1 },
@@ -19,9 +19,6 @@ const PadsList = () => {
   const [cardDelete, setCardDelete] = useState({});
   const [open, setOpen] = useState(false);
 
-  const navigateClick = (id) => {
-    navigate(`/pad/${id}`);
-  };
   const deleteCard = (i) => {
     if (i == -1) {
       setCardDelete({});
@@ -45,7 +42,7 @@ const PadsList = () => {
    };*/
 
   return (
-    <Table>
+    <Table variant='light' className=''>
       <thead>
         <tr>
           <th>Baralho</th>
@@ -60,9 +57,9 @@ const PadsList = () => {
           <tr key={idx}>
             <td>{row.title}</td>
             <td>{row.subject}</td>
-            <td><PlayIcon/></td>
-            <td><EditIcon/></td>
-            <td><TrashIcon/></td>
+            <td><Button size='lg' variant='light' onClick={() => navigate(`/pad/${row.id}`)}><PlayIcon /></Button></td>
+            <td><Button size='lg' variant='light'><EditIcon /></Button></td>
+            <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
           </tr>
         ))}
       </tbody>

@@ -2,9 +2,11 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
+import { ReactComponent as EditIcon } from '../assets/icons/edit.svg';
 
 
 import Table from 'react-bootstrap/Table';
+import { Button } from 'react-bootstrap';
 
 //Exemplo de dados que vamos receber do backend
 const rows = [
@@ -19,26 +21,26 @@ const LevelsTimeList = () => {
   const navigate = useNavigate();
 
   return (
-      <Table hover responsive="lg">
-        <thead>
-          <tr>
-            <th>Nível</th>
-            <th>Editar</th>
-            <th>Deletar</th>
+    <Table variant='light' responsive="lg">
+      <thead>
+        <tr>
+          <th>Nível</th>
+          <th>Editar</th>
+          <th>Deletar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, idx) => (
+          <tr key={`row-${row.id}`}>
+            <td component="th" scope="row">
+              {row.name}
+            </td>
+            <td><Button size='lg' variant='light' onClick={() => navigate(`/setting/leve/${row.id}`)}><EditIcon /></Button></td>
+            <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
           </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, idx) => (
-            <tr key={`row-${row.id}`}>
-              <td component="th" scope="row">
-                {row.name}
-              </td>
-              <td>Edit<i className="bi bi-pen"></i></td>
-              <td><TrashIcon/></td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+        ))}
+      </tbody>
+    </Table>
   );
 };
 

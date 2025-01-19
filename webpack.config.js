@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // Adicionado aqui
 
 module.exports = {
   entry: './src/index.js',
@@ -33,9 +33,17 @@ module.exports = {
       {
         test: /\.scss$/, // Aplica a regra a arquivos .scss
         use: [
-          'style-loader', // Insere o CSS no DOM
-          'css-loader',   // Processa os arquivos CSS
-          'sass-loader',  // Converte SCSS para CSS
+          { loader: 'style-loader' }, // Insere o CSS no DOM
+          { loader: 'css-loader' },   // Processa os arquivos CSS
+          { loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'src')],
+              },
+            },
+
+           },  // Converte SCSS para CSS
         ],
       },
       {
@@ -51,6 +59,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'dist', 'index.html'), // Caminho correto para o arquivo HTML
       inject: false,
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: './src/style', to: '' }, // Exemplo: copia a pasta `assets` para `dist/assets`
+      ],
     }),
     // new BundleAnalyzerPlugin(),
 

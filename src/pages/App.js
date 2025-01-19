@@ -7,8 +7,7 @@ import Pad from "./Pad";
 import Settings from "./Settings";
 import PadEdit from "./PadEdit";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './style.css';
-
+import '../style/main.scss'
 function App() {
     return (
         <BrowserRouter>

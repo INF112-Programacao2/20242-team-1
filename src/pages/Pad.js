@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container,Row } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 
 import Card from 'react-bootstrap/Card';
@@ -54,15 +54,13 @@ const Pad = () => {
     }
 
     return (
-        <Container>
+        <Container className='cardPageContaier' variant='light'>
             {finish ?
                 <h5>Não há mais revisões !</h5>
                 : <> <Card
                     bg="LIGHT"
                     key="Light"
-                    text="Light"
-                    style={{ width: '18rem' }}
-                    className="mb-2">
+                    text="Light">
                     <Card.Body>
                         <Card.Title>
                             <h5>
@@ -74,11 +72,11 @@ const Pad = () => {
                         </Card.Text>}
                     </Card.Body>
                 </Card>
-                    {visibleBack ? <ButtonGroup aria-label="Basic button group">
+                    {visibleBack ? <ButtonGroup aria-label="Basic button group" className='bottom'>
                         <Button variant="secondary" onClick={() => nextCard(cards)}> Next</Button>
                     </ButtonGroup> : <ButtonGroup variant="contained" aria-label="Basic button group">
                         {levelTime.map((level) => {
-                            return <Button variant="secondary" key={level.id} onClick={() => setVsibleBackFinish(true)}>{level.title}</Button>
+                            return <Button className='bottom' variant="secondary" key={level.id} onClick={() => setVsibleBackFinish(true)}>{level.title}</Button>
                         })}
                     </ButtonGroup>}
                 </>
