@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container,Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
+import { ReactComponent as SmileIcon } from '../assets/icons/smile.svg';
 let cards = [{ id: 1, front: "Frente 1", back: "Verso 1", pad_id: 1, level_time_id: 1, last_review: new Date() },
 { id: 2, front: "Frente 2", back: "Verso 2", pad_id: 2, level_time_id: 2, last_review: new Date() },
 { id: 3, front: "Frente 3", back: "Verso 3", pad_id: 3, level_time_id: 3, last_review: new Date() }
@@ -56,19 +56,20 @@ const Pad = () => {
     return (
         <Container className='cardPageContaier' variant='light'>
             {finish ?
-                <h5>Não há mais revisões !</h5>
+                <div className='align-self-center py-4'>
+                    <h4>Não há mais revisões ! <SmileIcon /></h4>
+                </div>
                 : <> <Card
                     bg="LIGHT"
                     key="Light"
                     text="Light">
                     <Card.Body>
                         <Card.Title>
-                            <h5>
+                            <h4>
                                 {card.front ?? ""}
-                            </h5>
+                            </h4>
                         </Card.Title>
-                        {visibleBack && <Card.Text>
-                            <h6>{card.back ?? ""}</h6>
+                        {visibleBack && <Card.Text>{card.back ?? ""}
                         </Card.Text>}
                     </Card.Body>
                 </Card>
