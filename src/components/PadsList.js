@@ -58,7 +58,7 @@ const PadsList = () => {
             <td>{row.title}</td>
             <td>{row.subject}</td>
             <td><Button size='lg' variant='light' onClick={() => navigate(`/pad/${row.id}`)}><PlayIcon /></Button></td>
-            <td><Button size='lg' variant='light'><EditIcon /></Button></td>
+            <td><Button size='lg' variant='light'onClick={() => navigate(`/edit/pad/${row.id}`)}><EditIcon /></Button></td>
             <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
           </tr>
         ))}

@@ -8,6 +8,8 @@ import Settings from "./Settings";
 import PadEdit from "./PadEdit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/main.scss'
+import CardEdit from "./CardEdit";
+
 function App() {
     return (
         <BrowserRouter>
@@ -18,6 +20,7 @@ function App() {
                 <Route path="/pad/:id" element={<Pad />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/edit/pad/:id" element={<PadEdit />} />
+                <Route path="/card/:id?" element={<CardEdit/>} />
             </Routes>
         </BrowserRouter>
     );

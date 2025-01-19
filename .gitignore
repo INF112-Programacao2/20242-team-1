@@ -2,3 +2,4 @@ node_modules
 build
 dist
 !dist/index.html
+src/assets/uploads

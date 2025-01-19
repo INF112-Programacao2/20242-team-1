@@ -3,9 +3,7 @@ import { Container } from 'react-bootstrap';
 
 const Home = () => {
   return (
-    <Container>
-
-    </Container>
+    <Container>Home page</Container>
   );
 };
 
