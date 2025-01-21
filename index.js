@@ -33,15 +33,15 @@ app.get('/api/greet/:name', (req, res) => {
 
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {
-  const { image } = req.files;
+  const { file } = req.files;
   const diretorio = './src/assets/uploads';
   // Se nenhum arquivo foi enviado
-  if (!image) return res.sendStatus(400);
+  if (!file) return res.sendStatus(400);
   if (!fs.existsSync(diretorio)) {
     fs.mkdirSync(diretorio);
   }
   // Move a imagem para o diretório de uploads
-  image.mv(path.join(__dirname, diretorio, image.name), (err) => {
+  file.mv(path.join(__dirname, diretorio, file.name), (err) => {
     if (err) {
       console.error('Erro ao mover o arquivo:', err);
       return res.sendStatus(500);
@@ -49,6 +49,35 @@ app.post('/api/upload', (req, res) => {
 
     res.sendStatus(200);
   });
+});
+
+app.post('/api/card/edit/:id', (req, res) => {
+  const id = req.params.id;
+  let editCard = {};
+  if (req.card) {
+    const card = req.card;
+    //salva o alteração no card
+    if (card.back) {
+      res.sendStatus(200);
+    }
+  }
+  if (req.file) {
+    const file = req.file
+    let cardFile = {
+      path: `/src/assets/uploads`,
+      name: file.name,
+      type: file.type,
+      caption: file.caption,
+
+    }
+    //chamar edição de CardImage
+  } else if (req.audio) {
+    //chamar edição de CardAudio
+  }
+  console.log(`edit card ${id}`);
+  // Chamar função C++ ou lógica
+  // retornar 
+  res.json();
 });
 
 // Rota para obter informações de um card

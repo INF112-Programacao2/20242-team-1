@@ -5,49 +5,52 @@ import { Container } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Accordion } from 'react-bootstrap';
-import {ReactComponent as TextIcon} from '../assets/icons/card-text.svg';
-import {ReactComponent as ImgIcon} from '../assets/icons/img.svg';
-import {ReactComponent as MicIcon} from '../assets/icons/mic.svg';
+import Image from 'react-bootstrap/Image';
+import { ReactComponent as TextIcon } from '../assets/icons/card-text.svg';
+import { ReactComponent as ImgIcon } from '../assets/icons/img.svg';
+import { ReactComponent as MicIcon } from '../assets/icons/mic.svg';
+import AudioInputPlayer from '../components/AudioInputPlayer';
 const CardEdit = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null); // Para armazenar os dados da API
-    const [cardType, setCardType]= useState(0);
-    const [file, setFile] = useState(null); // Para armazenar o arquivo selecionado
+    const [cardType, setCardType] = useState(0);
+    const [image, setImage] = useState(null); // Para armazenar o arquivo selecionado
     const [text, setText] = useState(null);
     const [audio, setAudio] = useState(null);
- 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]); // Armazena o arquivo selecionado no estado
-      };
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
 
-        if (file) {
-          const formData = new FormData();
-          console.log(file)
-          formData.append('image', file);
-    
-          try {
-            const response = await fetch('http://localhost:3000/api/upload', {
-              method: 'POST',
-              body: formData,
-            });
-            console.log(response)
-            if (!response.ok) {
-              throw new Error('Failed to upload file');
-            }
-    
-            console.log('File uploaded successfully:');
-          } catch (error) {
-            console.error('Error uploading file:', error);
-          }
-        } else {
-          console.log('No file selected for upload');
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]); // Armazena o arquivo selecionado no estado
+
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        if (image) {
+            formData.append('file', image);
+        } else if (audio) {
+            formData.append('file', audio, 'audio_recording.webm');
+
         }
-      };
-    
+        if (image || audio) {
+            try {
+                const response = await fetch('http://localhost:3000/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+                console.log(response)
+                if (!response.ok) {
+                    throw new Error('Failed to upload image');
+                }
+                console.log('file uploaded successfully:');
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
+
+    };
+
     useEffect(() => {
         async function fetchData() {
             if (id) {
@@ -94,29 +97,29 @@ const CardEdit = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicSubject">
-                    
+
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Accordion defaultActiveKey={cardType}>
-                        <Accordion.Item eventKey="0" onClick={()=>setCardType(0)}>
-                            <Accordion.Header>Texto <TextIcon/></Accordion.Header>
+                        <Accordion.Item eventKey="0" onClick={() => setCardType(0)}>
+                            <Accordion.Header>Texto <TextIcon /></Accordion.Header>
                             <Accordion.Body>
-                            <Form.Label>Assunto</Form.Label>
-                            <Form.Control type="text" placeholder="Adicione o assunto" />
+                                <Form.Label>Assunto</Form.Label>
+                                <Form.Control type="text" placeholder="Adicione o assunto" />
                             </Accordion.Body>
                         </Accordion.Item>
-                        <Accordion.Item eventKey="1" onClick={()=>setCardType(1)}>
-                            <Accordion.Header>Imagem <ImgIcon/></Accordion.Header>
+                        <Accordion.Item eventKey="1" onClick={() => setCardType(1)}>
+                            <Accordion.Header>Imagem <ImgIcon /></Accordion.Header>
                             <Accordion.Body>
                                 <Form.Label>Default file input example</Form.Label>
-                                <Form.Control type="file" onChange={handleFileChange}/>
+                                <Form.Control type="file" onChange={handleImageChange} />
+                                {image != null ?? <Image src={image.name} />}
                             </Accordion.Body>
                         </Accordion.Item>
-                        <Accordion.Item eventKey="2" onClick={()=>setCardType(2)}>
-                            <Accordion.Header>Audio <MicIcon/></Accordion.Header>
+                        <Accordion.Item eventKey="2" onClick={() => setCardType(2)}>
+                            <Accordion.Header>Audio <MicIcon /></Accordion.Header>
                             <Accordion.Body>
-                                <Form.Label>Default file input example</Form.Label>
-                                <Form.Control type="file" />
+                                <AudioInputPlayer setAudio={setAudio} />
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>

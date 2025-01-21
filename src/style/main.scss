@@ -48,4 +48,26 @@ body {
         justify-content: space-between;
         margin-top: 1%;
     }
+
+    .audio {
+        width: 10rem;
+        border-radius: 0rem 1rem 1rem 0rem;
+    }
+
+    .player {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 340px;
+        border-radius: 2rem;
+        background-color: #f1f3f4;
+        height: 54px;
+
+        button {
+            background-color: #f1f3f4;
+            border-radius: 1rem;
+            border: none;
+            color: black;
+        }
+    }
 }

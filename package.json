@@ -25,6 +25,7 @@
     "react-bootstrap": "^2.10.7",
     "react-devtools": "^6.0.1",
     "react-dom": "^19.0.0",
+    "react-mic": "^12.4.6",
     "react-router-dom": "^7.1.1",
     "sass": "^1.83.4",
     "sass-loader": "^16.0.4",
