@@ -14,10 +14,11 @@
 class DatabaseConnection {
 private:
     sqlite3* db;
-    std::string db_name = "dados.db";
+    std::string db_name= "dados.db";
     std::string last_error;
 public:
-    DatabaseConnection();       //ABRE O ARQUIVO dados.db
+    DatabaseConnection(); 
+    DatabaseConnection(std::string db_name);       //ABRE O ARQUIVO dados.db
     ~DatabaseConnection();      //FECHA O ARQUIVo dados.db
 
     bool openConnection();      //ABRE O ARQUIVO dados.db, mas agora uma funcao

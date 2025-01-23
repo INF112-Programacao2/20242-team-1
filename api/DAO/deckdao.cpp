@@ -98,14 +98,35 @@ Deck DeckDAO::getDeckById(int id){
 
 
 bool DeckDAO::createDeck(Deck& deck){
-    //linha de comando para executar o SQL
-    if(db.executeQuery("INSERT INTO Deck (title, subject) VALUES ('" + deck.getTitle() + "', '" + deck.getSubject() + "');")) 
+    std::string sql = "INSERT INTO Deck (title, subject) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
 
-    {                                                                         
-        deck.setId(getDeckID(deck));// talvez remover esta parte
-    return true;
+    try {
+        if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
+        }
+
+        // Vincula os valores
+        sqlite3_bind_text(stmt, 1, deck.getTitle().c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, deck.getSubject().c_str(), -1, SQLITE_STATIC);
+
+        // Executa a consulta
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            throw std::runtime_error("Erro ao executar consulta: " + db.getLastError());
+        }
+
+        // Obtém o ID do Deck recém-criado
+        int newId = sqlite3_last_insert_rowid(db.getDB());
+        deck.setId(newId);  // Atualiza o objeto Deck com o novo ID
+        std::cout << "Deck criado com ID: " << newId << std::endl;
+
+        sqlite3_finalize(stmt);
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Erro ao criar Deck: " << e.what() << std::endl;
+        sqlite3_finalize(stmt);
+        return false;
     }
-    return false; //SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
     
 }
 bool DeckDAO::deleteDeck(int id){
