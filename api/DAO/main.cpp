@@ -5,8 +5,8 @@
 #include "DatabaseConnection.h"
 #include "deckdao.h"
 #include "sqlite3.h"
-#include "..\card.h"
-#include "..\deck.h"
+#include "../card.h"
+#include "../deck.h"
 
 int main (){
     try{

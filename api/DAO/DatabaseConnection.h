@@ -6,8 +6,9 @@
 #include <string>
 #include <array>
 
-#include "..\card.h"
-#include "..\deck.h"
+
+#include "../card.h"
+#include "../deck.h"
 #include "sqlite3.h"
 
 class DatabaseConnection {

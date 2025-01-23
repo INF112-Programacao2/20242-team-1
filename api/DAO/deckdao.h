@@ -1,7 +1,7 @@
 #ifndef DECKDAO_H
 #define DECKDAO_H
 
-#include "..\deck.h"
+#include "../deck.h"
 #include "DatabaseConnection.h"
 #include "sqlite3.h"
 
