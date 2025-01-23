@@ -2,7 +2,7 @@
 #define CARD_H
 
 #include <string>
-// #include <ctime>
+#include "date.h"
 
 class Card{
     private:
@@ -11,7 +11,7 @@ class Card{
         std::string back;   // Verso da carta
         // int deck_id;        // Baralho ao qual a carta pertence
         // int levelTime_id;   // Nível de tempo ao qual a carta pertence
-        //Data lastReview; // Última vez que a carta foi estudada
+        Date lastReview; // Última vez que a carta foi estudada
         
         // ----------------- //
         // Sugestão: usar a biblioteca <ctime> para manipulação de datas,
