@@ -1,4 +1,4 @@
-// myclass.cpp
+/*
 #include <napi.h>
 #include "../api/myclass.cpp"
 // Funções para integrar com Node.js
@@ -21,3 +21,4 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 }
 
 NODE_API_MODULE(myclass, Init);
+*/

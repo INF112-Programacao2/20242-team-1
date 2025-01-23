@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const myclass = require('./build/Release/myclass.node'); // Módulo C++ compilado
+//const myclass = require('./build/Release/myclass.node'); // Módulo C++ compilado
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -24,13 +24,13 @@ app.get('*', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-// Rota para API de saudação
+/*
 app.get('/api/greet/:name', (req, res) => {
   const name = req.params.name;
   const greeting = myclass.greet(name); // Chama a função C++
   res.json({ message: greeting });
 });
-
+*/
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {
   const { file } = req.files;
