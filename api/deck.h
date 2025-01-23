@@ -32,8 +32,8 @@ class Deck{
 
         // Métodos
         void updateDeck(std::string title, std::string subject);
-        void addCard(Card card);
-        void removeCard(int id);
+        //void addCard(Card card);
+        //void removeCard(int id);
 
 };
 

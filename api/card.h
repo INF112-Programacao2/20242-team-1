@@ -24,7 +24,7 @@ class Card{
         Card();
 
         // Getters
-        int getId() const;
+        //int getId() const;
 }; // @TODO
 
 #endif // CARD_H

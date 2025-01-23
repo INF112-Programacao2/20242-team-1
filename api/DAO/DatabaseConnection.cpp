@@ -8,12 +8,13 @@
     }
 
     bool DatabaseConnection::openConnection(){
-        if(sqlite3_open(db_name.c_str(),&db)){
+        if(sqlite3_open(db_name.c_str(),&db) == SQLITE_OK ){
             return true;
+        }else{
+            last_error = sqlite3_errmsg(db);
+            throw std::runtime_error("Erro ao abrir banco de dados: " + std::string(last_error));
+            return false;
         }
-        last_error = sqlite3_errmsg(db);
-        throw std::runtime_error("Erro ao abrir banco de dados: " + std::string(last_error));
-        return false;
     }
     void DatabaseConnection::closeConnection(){
             if (db) {

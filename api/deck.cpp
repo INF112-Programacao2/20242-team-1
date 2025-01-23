@@ -46,7 +46,7 @@ void Deck::updateDeck(std::string title, std::string subject){
     this->title = title;
     this->subject = subject;
 }
-
+/*
 void Deck::addCard(Card card){
     for (int i = 0; i < 50; i++){
         if (this->cards[i].getId() == -1){
@@ -63,4 +63,4 @@ void Deck::removeCard(int id){
             break;
         }
     }
-}
+}*/

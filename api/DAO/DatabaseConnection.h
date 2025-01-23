@@ -1,11 +1,14 @@
+#ifndef DATABASECONNECTION_H
+#define DATABASECONNECTION_H
+
 #include <iostream>
-#include <sqlite3.h>
 #include <vector>
 #include <string>
 #include <array>
 
-#include "card.h"
-#include "deck.h"
+#include "..\card.h"
+#include "..\deck.h"
+#include "sqlite3.h"
 
 class DatabaseConnection {
 private:
@@ -13,13 +16,13 @@ private:
     std::string db_name = "dados.db";
     std::string last_error;
 public:
-    DatabaseConnection();
-    ~DatabaseConnection();
+    DatabaseConnection();       //ABRE O ARQUIVO dados.db
+    ~DatabaseConnection();      //FECHA O ARQUIVo dados.db
 
-    bool openConnection();
-    void closeConnection();
+    bool openConnection();      //ABRE O ARQUIVO dados.db, mas agora uma funcao
+    void closeConnection();     //FECHA O ARQUIVo dados.db, mas agora uma funcao
 
-    bool executeQuery(const std::string& query);
+    bool executeQuery(const std::string& query); //EXECUTA COMANDO SQL
     /*
     std::vector<std::vector<std::string>> fetchQuery(const std::string& query);
     */
@@ -27,8 +30,10 @@ public:
     bool commitTransaction();
     bool rollbackTransaction();
 
-    std::string getLastError() const;
-    sqlite3* getDB();
-    void setDatabaseName(const std::string& name);
+    std::string getLastError() const;                       //RETORNA ULTIMO ERRO OCORRIDO
+    sqlite3* getDB();                                       //PEGA O ARQUIVO .db
+    void setDatabaseName(const std::string& name);          //MUDA NOME DA DATABASE(talvez retirar)
 
 };
+
+#endif

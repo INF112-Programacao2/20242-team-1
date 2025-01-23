@@ -1,6 +1,7 @@
-#include <deckdao.h>
+#include "deckdao.h"
 
 DeckDAO::DeckDAO(DatabaseConnection& database) : db(database) {} 
+DeckDAO::~DeckDAO(){}
 
 bool DeckDAO::deckExists(int id){
     bool exists = false;
@@ -95,6 +96,7 @@ Deck DeckDAO::getDeckById(int id){
 }
 
 
+
 bool DeckDAO::createDeck(Deck& deck){
     //linha de comando para executar o SQL
     if(db.executeQuery("INSERT INTO Deck (title, subject) VALUES ('" + deck.getTitle() + "', '" + deck.getSubject() + "');")) 
@@ -134,8 +136,38 @@ bool DeckDAO::addCardToDeck(int deck_id, int card_id);
 bool DeckDAO::deleteCardFromDeck(int deck_id, int card_id);
 
 //FALTA CRIAR card.h PARA RESOLV
-std::array<Deck,50> DeckDAO::getAllDecks();
 std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
+
+//FALTA CRIAR CONSTRUTOR PADRAO
+/*std::array<Deck,50> DeckDAO::getAllDecks(){
+    std::array<Deck, 50> decks;
+    size_t index = 0;
+
+    std::string sql = "SELECT id, title, subject FROM Deck LIMIT 50;";
+    sqlite3_stmt* stmt;
+
+    try {
+        if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+            while (sqlite3_step(stmt) == SQLITE_ROW && index < 50) {
+                int id = sqlite3_column_int(stmt, 0);
+                std::string title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+                std::string subject = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+
+                Deck deck(title, subject);
+                deck.setId(id);  // Se existir um setter para ID, ou adicionar no construtor
+
+                decks[index++] = deck;
+            }
+        } else {
+            throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Erro ao buscar decks: " << e.what() << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    return decks;
+}*/
 
 
 
