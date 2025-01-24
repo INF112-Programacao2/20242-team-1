@@ -10,7 +10,6 @@ class Card{
         std::string front;          // Frente da carta
         std::string back;           // Verso da carta
         int deck_id;                // Baralho ao qual a carta pertence
-        int levelTime_id = NULL;    // Nível de tempo ao qual a carta pertence
         Date lastReview;            // Última vez que a carta foi estudada
 
     public:
@@ -24,7 +23,6 @@ class Card{
         std::string getFront() const;
         std::string getBack() const;
         int getDeckId() const;
-        int getLevelTimeId() const;
         Date getLastReview() const;
 
         // ======= Setters =======
@@ -33,7 +31,6 @@ class Card{
         void setFront(std::string front);
         void setBack(std::string back);
         void setDeckId(int deck_id);
-        void setLevelTimeId(int levelTime_id);
         void setLastReview(Date lastReview);
 
         // ======= Methods =======
