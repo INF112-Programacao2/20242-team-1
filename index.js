@@ -1,11 +1,23 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const addon = require('./build/Release/addon.node');
+//const deck = require('./build/Release/deck.node');
 //const myclass = require('./build/Release/myclass.node'); // Módulo C++ compilado
 const fileUpload = require('express-fileupload');
 
 const app = express();
 const port = 3000;
+
+try {
+  const connection = addon.createConnection();
+  console.log('Conexão criada:', connection);
+
+  const deck = addon.getDeckById(2);
+  console.log('Deck encontrado:', deck);
+} catch (error) {
+  console.error('Erro ao criar conexão:', error.message);
+}
 
 // Middleware para permitir upload de arquivos
 app.use(fileUpload());

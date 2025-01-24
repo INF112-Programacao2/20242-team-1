@@ -10,15 +10,8 @@
 
 int main (){
     try{
-    DatabaseConnection a;
+    DatabaseConnection a("../dados.db");
     DeckDAO b(a);
-    Deck c("muitoo fodaa","Queee legaaalll");
-    Deck d("oitenta","quarenta");
-    c.setId(2);
-    //b.createDeck(c);
-    //b.createDeck(d);
-    //b.deleteDeck(3);
-    //b.updateDeck(c);
     Deck e = b.getDeckById(2);
     b.createDeck(e);
     }catch (const std::exception& e){

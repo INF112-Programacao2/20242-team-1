@@ -7,7 +7,8 @@
                 "/usr/include/c++/14.2.1/",
                 "/usr/include/c++/14.2.1/x86_64-pc-linux-gnu",
                 "/usr/include",
-                "/usr/include/node"
+                "/usr/include/node",
+                "${workspaceFolder}/node_modules/@parcel/watcher/node_modules/node-addon-api"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

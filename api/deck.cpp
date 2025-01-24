@@ -5,9 +5,14 @@
 Deck::Deck(std::string title, std::string subject){
     this->title = title;
     this->subject = subject;
-    this->cards.fill(Card());
+    //this->cards.fill(Card());
 }
-
+Deck::Deck(int id,std::string title, std::string subject){
+    this->id = id;
+    this->title = title;
+    this->subject = subject;
+    //this->cards.fill(Card());
+}
 int Deck::getId() const{
     return this->id;
 }
@@ -19,11 +24,11 @@ std::string Deck::getTitle() const{
 std::string Deck::getSubject() const{
     return this->subject;
 }
-
+/*
 std::array<Card,50> Deck::getCards() const{
     return this->cards;
 }
-
+*/
 void Deck::setId(int id){
     this->id = id;
 }
