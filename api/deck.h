@@ -11,10 +11,10 @@ class Deck{
         std::string title;              // Título
         std::string subject;            // Assunto/matéria
        // std::array<Card,50> cards;      // Cartas do baralho. MÁX: 50
-        // int levelCollection_id  @TODO
 
     public:
         // Construtor
+        Deck();
         Deck(std::string title, std::string subject);
         Deck(int id,std::string title, std::string subject);
         // Destrutor

@@ -160,7 +160,7 @@ bool DeckDAO::deleteCardFromDeck(int deck_id, int card_id);
 std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
 
 //FALTA CRIAR CONSTRUTOR PADRAO
-/*std::array<Deck,50> DeckDAO::getAllDecks(){
+std::array<Deck,50> DeckDAO::getAllDecks(){
     std::array<Deck, 50> decks;
     size_t index = 0;
 
@@ -188,7 +188,7 @@ std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
 
     sqlite3_finalize(stmt);
     return decks;
-}*/
+}
 
 
 

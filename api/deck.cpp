@@ -1,6 +1,7 @@
 // deck.cpp
 #include "deck.h"
 
+Deck::Deck(){}
 
 Deck::Deck(std::string title, std::string subject){
     this->title = title;
@@ -26,12 +27,6 @@ std::string Deck::getSubject() const{
 }
 /*
 std::array<Card,50> Deck::getCards() const{
-    // Card cards_aux[50];
-    // for (int i = 0; i < 50; i++){
-    //     cards_aux[i] = this->cards[i];
-
-    // }
-    // return cards_aux;
     return this->cards;
 }
 */
@@ -51,6 +46,7 @@ void Deck::updateDeck(std::string title, std::string subject){
     this->title = title;
     this->subject = subject;
 }
+
 /*
 void Deck::addCard(Card card){
     for (int i = 0; i < 50; i++){

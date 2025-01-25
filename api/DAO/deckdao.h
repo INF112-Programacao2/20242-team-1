@@ -23,8 +23,8 @@ public:
 
     int getDeckID(Deck& deck); //RETORNA O ID DO DECK DESEJADO, NO DECK ENVIADO DEVERA SER COLOCADO SOMENTE "TITLE E SUBJECT"; SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
     Deck getDeckById(int id);//RETORNA UM DECK COM O ID INFORMADO; SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
-    //std::array<Deck,50> getAllDecks();//AINDA NAO FEITO
-    
+    std::array<Deck,50> getAllDecks();//AINDA NAO FEITO
+
     // FUNCOES BOOL QUE RETORNARAO TRUE SE TIVEREM RODADO CORRETAMENTE
     bool createDeck(Deck& deck); //SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
     bool deleteDeck(int id);//SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
