@@ -1,7 +1,11 @@
 // deck.cpp
 #include "deck.h"
 
-Deck::Deck(){}
+Deck::Deck(){
+    this->id = 0;
+     this->title ="";
+    this->subject = "";
+}
 
 Deck::Deck(std::string title, std::string subject){
     this->title = title;

@@ -36,9 +36,8 @@ class Card{
         // ======= Methods =======
 
         void updateCard(std::string front, std::string back, int deck_id);
-        // virtual void setNextReview(int levelTime_id, Date lastReview) = 0;
+        // virtual void setNextReview(Date lastReview) = 0;
         // virtual void setNextReview() = 0;
-        // virtual LevelTime getNextLevelTime() = 0;
 
 
 }; 

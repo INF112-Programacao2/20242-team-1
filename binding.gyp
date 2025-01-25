@@ -6,8 +6,7 @@
         "./integration/addon.cpp",
         "./api/DAO/DatabaseConnection.cpp",
         "./api/deck.cpp",
-        "./api/DAO/deckdao.cpp",
-        "./api/card.cpp"
+        "./api/DAO/deckdao.cpp"
       ],
       "include_dirs": [
         "<!(node -p \"require('node-addon-api').include_dir\")",

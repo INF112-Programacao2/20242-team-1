@@ -14,32 +14,13 @@ const rows = [
   { title: 'title', subject: 'subject', id: 5 },
 ];
 
-const PadsList = () => {
+const DecksList = (props) => {
   const navigate = useNavigate();
   const [cardDelete, setCardDelete] = useState({});
   const [open, setOpen] = useState(false);
-
   const deleteCard = (i) => {
-    if (i == -1) {
-      setCardDelete({});
-    } else {
-      setCardDelete(rows[i]);
-    }
+  
   }
-  // Estado para armazenar o número de cliques
-  //const [clickCount, setClickCount] = useState('');
-
-  // Função para lidar com o clique no botão
-  /* const navigateClick = async () => {
-     try {
-       const response = await fetch(`http://localhost:3000/api/greet/sabrina`);
-       const data = await response.json();
-       console.log(data)
-       setClickCount(data.message);
-     } catch (error) {
-       console.error('Error fetching data:', error);
-     }
-   };*/
 
   return (
     <Table variant='light' className=''>
@@ -47,17 +28,15 @@ const PadsList = () => {
         <tr>
           <th>Baralho</th>
           <th>Assunto</th>
-          <th>Jogar</th>
           <th>Editar</th>
           <th>Deletar</th>
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, idx) => (
+        {props.decks.map((row, idx) => (
           <tr key={idx}>
             <td>{row.title}</td>
             <td>{row.subject}</td>
-            <td><Button size='lg' variant='light' onClick={() => navigate(`/pad/${row.id}`)}><PlayIcon /></Button></td>
             <td><Button size='lg' variant='light'onClick={() => navigate(`/edit/pad/${row.id}`)}><EditIcon /></Button></td>
             <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
           </tr>
@@ -67,4 +46,4 @@ const PadsList = () => {
   );
 };
 
-export default PadsList;
+export default DecksList;

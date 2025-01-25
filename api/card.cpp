@@ -63,15 +63,6 @@ int Card::getDeckId() const{
 }
 
 /*
-* @brief Método que retorna o id do nível de tempo ao qual a carta pertence
-* @param void
-* @return int Id do nível de tempo ao qual a carta pertence
-*/
-int Card::getLevelTimeId() const{
-    return this->levelTime_id;
-}
-
-/*
 * @brief Método que retorna a data da última revisão da carta
 * @param void
 * @return Date Data da última revisão da carta
@@ -114,15 +105,6 @@ void Card::setBack(std::string back){
 */
 void Card::setDeckId(int deck_id){
     this->deck_id = deck_id;
-}
-
-/*
-* @brief Método que atualiza o id do nível de tempo ao qual a carta pertence
-* @param int Id do nível de tempo ao qual a carta pertence
-* @return void
-*/
-void Card::setLevelTimeId(int levelTime_id){
-    this->levelTime_id = levelTime_id;
 }
 
 /*

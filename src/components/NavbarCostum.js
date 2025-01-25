@@ -13,7 +13,6 @@ function NavbarCostum() {
                 <Navbar.Brand href="/">Home</Navbar.Brand>
                 <Nav.Link href="/pad">Baralhos <CardIcon/></Nav.Link>
                 <Nav.Link href="/settings">Configurações <GearIcon/></Nav.Link>
-                <Nav.Link href="/">Estatísticas <StatsIcon/></Nav.Link>
             </Container>
         </Navbar>
     );

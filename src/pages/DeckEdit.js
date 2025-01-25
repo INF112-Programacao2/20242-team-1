@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import CardsList from '../components/CardsList';
 
-const PadEdit = () => {
+const DeckEdit = () => {
     const { id } = useParams();
     // consulta o backend
     //Exemplo de dados que vamos receber do backend
@@ -43,4 +43,4 @@ const PadEdit = () => {
 
     );
 }
-export default PadEdit;
+export default DeckEdit;

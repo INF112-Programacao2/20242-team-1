@@ -9,16 +9,6 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const port = 3000;
 
-try {
-  const connection = addon.createConnection();
-  console.log('Conexão criada:', connection);
-
-  const deck = addon.getDeckById(2);
-  console.log('Deck encontrado:', deck);
-} catch (error) {
-  console.error('Erro ao criar conexão:', error.message);
-}
-
 // Middleware para permitir upload de arquivos
 app.use(fileUpload());
 
@@ -36,13 +26,16 @@ app.get('*', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-/*
-app.get('/api/greet/:name', (req, res) => {
-  const name = req.params.name;
-  const greeting = myclass.greet(name); // Chama a função C++
-  res.json({ message: greeting });
+app.get('/api/decks', (req, res) => {
+  try {
+    const decks = addon.getDeckAll();
+    res.json(decks);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
 });
-*/
+
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {
   const { file } = req.files;
