@@ -35,6 +35,16 @@ app.get('/api/decks', (req, res) => {
   }
 
 });
+app.delete('/api/deck/:id', (req, res) => {
+  const id =Number (req.params.id);
+  try {
+    const data = addon.deleteDeck(id);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
 
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {

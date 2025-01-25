@@ -31,13 +31,7 @@ const DecksPage = () => {
         );
     }
 
-    if (!data || data.length === 0) {
-        return (
-            <Container fluid="xl">
-                <h2>Não há dados disponíveis.</h2>
-            </Container>
-        );
-    }
+
 
     return (
         <Container fluid="xl">

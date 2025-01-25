@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
 import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit.svg';
-import { ReactComponent as PlayIcon } from '../assets/icons/play.svg';
+import DeleteButton from './DeleteButton';
 //Exemplo de dados que vamos receber do backend
 const rows = [
   { title: 'title', subject: 'subject', id: 1 },
@@ -16,11 +16,6 @@ const rows = [
 
 const DecksList = (props) => {
   const navigate = useNavigate();
-  const [cardDelete, setCardDelete] = useState({});
-  const [open, setOpen] = useState(false);
-  const deleteCard = (i) => {
-  
-  }
 
   return (
     <Table variant='light' className=''>
@@ -37,10 +32,13 @@ const DecksList = (props) => {
           <tr key={idx}>
             <td>{row.title}</td>
             <td>{row.subject}</td>
-            <td><Button size='lg' variant='light'onClick={() => navigate(`/edit/pad/${row.id}`)}><EditIcon /></Button></td>
-            <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
+            <td><Button size='lg' variant='light' onClick={() => navigate(`/edit/deck/${row.id}`)}><EditIcon /></Button></td>
+            <td><DeleteButton  url={`deck/${row.id}`}/></td>
           </tr>
+
         ))}
+        <tr><td colSpan={4}><Button size='sm' variant='secondary' onClick={() => navigate(`/card`)}> + Novo</Button></td></tr>
+
       </tbody>
     </Table>
   );

@@ -17,18 +17,12 @@ Napi::Object DeckToJSObject(Napi::Env env, const Deck &deck)
     return deckObj;
 }
 
-napi_value CreateArray(napi_env env, napi_callback_info info)
-{
-    napi_value jsArray;
-    napi_create_array(env, &jsArray); // Cria um array vazio
-    return jsArray;
-}
 
 // Função para obter um Deck por ID
 Napi::Value GetDeckById(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-
+  
     if (info.Length() < 1 || !info[0].IsNumber())
     {
         Napi::TypeError::New(env, "Esperado um ID numérico para o deck").ThrowAsJavaScriptException();
@@ -41,6 +35,28 @@ Napi::Value GetDeckById(const Napi::CallbackInfo &info)
     {
         Deck deck = deckDAO.getDeckById(deckId);
         return DeckToJSObject(env, deck);
+    }
+    catch (const std::exception &e)
+    {
+        Napi::Error::New(env, e.what()).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+}
+Napi::Value DeleteDeck(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1 || !info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, "Esperado um ID numérico para o deck").ThrowAsJavaScriptException();
+        return env.Null();
+    }
+
+    int deckId = info[0].As<Napi::Number>();
+
+    try
+    {
+        bool deck = deckDAO.deleteDeck(deckId);
+        return Napi::Boolean::New(env, deck);
     }
     catch (const std::exception &e)
     {
@@ -80,6 +96,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports.Set("getDeckAll", Napi::Function::New(env, GetDeckAll));
     exports.Set("getDeckById", Napi::Function::New(env, GetDeckById));
+    exports.Set("deleteDeck", Napi::Function::New(env, DeleteDeck));
     return exports;
 }
 

@@ -19,7 +19,7 @@ const DecksListPlay = (props) => {
         {props.decks.map((row, idx) => (
           <tr key={idx}>
             <td>{row.title}</td>
-            <td><Button size='lg' variant='light' onClick={() => navigate(`/pad/${row.id}`)}><PlayIcon /></Button></td>
+            <td><Button size='lg' variant='light' onClick={() => navigate(`/deck/${row.id}`)}><PlayIcon /></Button></td>
           </tr>
         ))}
       </tbody>

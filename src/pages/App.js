@@ -16,10 +16,10 @@ function App() {
             <NavbarCostum />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/pad" element={<DecksPage />} />
-                <Route path="/pad/:id" element={<CardsReview />} />
+                <Route path="/deck" element={<DecksPage />} />
+                <Route path="/deck/:id" element={<CardsReview />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/edit/pad/:id" element={<DeckEdit />} />
+                <Route path="/edit/deck/:id" element={<DeckEdit />} />
                 <Route path="/card/:id?" element={<CardEdit/>} />
             </Routes>
         </BrowserRouter>
