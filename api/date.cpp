@@ -104,6 +104,18 @@ int Date::getSecond() const{
     return this->second;
 }
 
+std::string Date::getDateBystring() const {
+        std::ostringstream ss;
+        ss << std::setfill('0') << std::setw(4) << year << "-" 
+           << std::setw(2) << month << "-" 
+           << std::setw(2) << day << " " 
+           << std::setw(2) << hour << ":" 
+           << std::setw(2) << minute << ":" 
+           << std::setw(2) << second;
+
+        return ss.str();
+}
+
 /*
 * @brief Método responsável por alterar o dia armazenado no objeto
 * @param int O número inteiro referente ao dia
@@ -156,6 +168,19 @@ void Date::setMinute(int minute){
 */
 void Date::setSecond(int second){
     this->second = second;
+}
+
+void Date::setDateBystring(const std::string& dateStr) {
+        std::istringstream ss(dateStr);
+        char dash1, dash2, space, colon1, colon2;
+
+        // Espera o formato: "YYYY-MM-DD HH:MM:SS"
+        if (!((ss >> year >> dash1 >> month >> dash2 >> day >> space >> hour >> colon1 >> minute >> colon2 >> second) ||
+            dash1 != '-' || dash2 != '-' || space != ' ' || colon1 != ':' || colon2 != ':')) {
+                std::string a = dateStr;
+                a += "oi";
+            throw std::runtime_error("Formato de data e hora inválido: " + dateStr);
+        }
 }
 
 /*

@@ -24,6 +24,9 @@ Card::Card(std::string front, std::string back, int deck_id){
     this->front = front;
     this->back = back;
     this->deck_id = deck_id;
+
+    Date a;
+    lastReview = a;
 }
 
 /*
