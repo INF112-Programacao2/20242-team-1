@@ -25,7 +25,7 @@ app.get('*', (req, res, next) => {
   // Redireciona todas as outras rotas para o 'index.html'
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
-
+// Pega todos os baralhos 
 app.get('/api/decks', (req, res) => {
   try {
     const decks = addon.getDeckAll();
@@ -35,10 +35,44 @@ app.get('/api/decks', (req, res) => {
   }
 
 });
+// Pega todos um baralho por id 
+app.get('/api/deck/:id', (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const deck = addon.getDeckById(id);
+    res.json(deck);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
 app.delete('/api/deck/:id', (req, res) => {
-  const id =Number (req.params.id);
+  const id = Number(req.params.id);
   try {
     const data = addon.deleteDeck(id);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+//Criar novo Deck
+app.post('/api/deck', (req, res) => {
+  const { title,subject } = req.body
+  try {
+    const data = addon.createUpdateDeck(title,subject);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+//Atualiza o Deck
+app.put('/api/deck/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const {title,subject } = req.body
+  try {
+    const data = addon.createUpdateDeck(title,subject,id);
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);

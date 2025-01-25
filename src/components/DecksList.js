@@ -37,7 +37,7 @@ const DecksList = (props) => {
           </tr>
 
         ))}
-        <tr><td colSpan={4}><Button size='sm' variant='secondary' onClick={() => navigate(`/card`)}> + Novo</Button></td></tr>
+        <tr><td colSpan={4}><Button size='sm' variant='secondary' onClick={() => navigate(`/edit/deck`)}> + Novo</Button></td></tr>
 
       </tbody>
     </Table>

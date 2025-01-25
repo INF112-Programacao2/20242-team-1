@@ -17,12 +17,11 @@ Napi::Object DeckToJSObject(Napi::Env env, const Deck &deck)
     return deckObj;
 }
 
-
 // Função para obter um Deck por ID
 Napi::Value GetDeckById(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-  
+
     if (info.Length() < 1 || !info[0].IsNumber())
     {
         Napi::TypeError::New(env, "Esperado um ID numérico para o deck").ThrowAsJavaScriptException();
@@ -77,7 +76,7 @@ Napi::Value GetDeckAll(const Napi::CallbackInfo &info)
         Napi::Array decksArray = Napi::Array::New(env);
 
         // Preencher o array com objetos Deck convertidos
-        for (size_t i = 0; decks[i].getId()!=0; ++i)
+        for (size_t i = 0; decks[i].getId() != 0; ++i)
         {
             Napi::Object deckObject = DeckToJSObject(env, decks[i]);
             decksArray[i] = deckObject; // Adiciona o objeto no array
@@ -90,13 +89,48 @@ Napi::Value GetDeckAll(const Napi::CallbackInfo &info)
         return env.Null();
     }
 }
+Napi::Value CreateUpdateDeck(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 2 || !info[0].IsString() || !info[1].IsString())
+    {
+        Napi::TypeError::New(env, "Esperado um ID numérico para o deck").ThrowAsJavaScriptException();
+        return env.Null();
+    }
 
+    std::string title = info[0].As<Napi::String>();
+    std::string subject = info[1].As<Napi::String>();
+    try
+    {
+        Deck newDeck(title, subject);
+
+        if (info.Length() > 2)
+        {
+            int deckId = info[2].As<Napi::Number>();
+            newDeck.setId(deckId);
+            bool deck = deckDAO.updateDeck(newDeck);
+            return Napi::Boolean::New(env, deck);
+        }
+        else
+        {
+            bool deck = deckDAO.createDeck(newDeck);
+            return Napi::Boolean::New(env, true);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        Napi::Error::New(env, e.what()).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+}
 // Inicializar o módulo
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports.Set("getDeckAll", Napi::Function::New(env, GetDeckAll));
     exports.Set("getDeckById", Napi::Function::New(env, GetDeckById));
     exports.Set("deleteDeck", Napi::Function::New(env, DeleteDeck));
+    exports.Set("createUpdateDeck", Napi::Function::New(env, CreateUpdateDeck));
+
     return exports;
 }
 
