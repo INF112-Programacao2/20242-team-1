@@ -250,21 +250,24 @@ Napi::Value CreateCard(const Napi::CallbackInfo &info)
 Napi::Value UpdateCardLastReview(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-    if (info.Length() < 5 || !info[0].IsNumber() || !info[1].IsNumber() || !info[2].IsNumber() || !info[3].IsNumber() || !info[4].IsNumber())
+    if (info.Length() < 7 || !info[0].IsNumber() || !info[1].IsNumber() || !info[2].IsNumber() || !info[3].IsNumber() || !info[4].IsNumber()|| !info[5].IsNumber() || !info[6].IsNumber())
     {
-        Napi::TypeError::New(env, "Esperadas Entradad para Card").ThrowAsJavaScriptException();
+        Napi::TypeError::New(env, "Esperadas Entradas para atualizar lastReview em Card").ThrowAsJavaScriptException();
         return env.Null();
     }
     // void updateDate(int day, int month, int year, int hour, int minute, int second);
     int id = info[0].As<Napi::Number>();
-    int mes = info[1].As<Napi::Number>();
-    int dia = info[2].As<Napi::Number>();
-    int hora = info[3].As<Napi::Number>();
-    int min = info[4].As<Napi::Number>();
+    int day = info[1].As<Napi::Number>();
+    int month = info[2].As<Napi::Number>();
+    int year = info[3].As<Napi::Number>();
+    int hour = info[4].As<Napi::Number>();
+    int minute = info[5].As<Napi::Number>();
+    int second = info[6].As<Napi::Number>();
+
     try
     {
         Card newCard = cardDAO.getCardById(id);
-        newCard.getLastReview().updateDate(dia, mes, 0, hora, min, 0);
+        newCard.getLastReview().updateDate(day,month,year,hour,minute,second);
         bool card = cardDAO.updateCard(newCard);
         return Napi::Boolean::New(env, card);
     }

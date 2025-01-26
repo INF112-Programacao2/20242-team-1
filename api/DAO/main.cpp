@@ -18,17 +18,16 @@
 
 int main (){
     try{
-        DatabaseConnection z("../../dados.db");//mudar para "../dados.db" linux; mudar para "../../dados.db" windows
-        //DeckDAO y(z);
-        //CardDAO x(z); 
+        DatabaseConnection z("../dados.db");//mudar para "../dados.db" linux; mudar para "../../dados.db" windows
+        DeckDAO y(z);
+        CardDAO x(z); 
         
         /*Card a("7 + 3","10",1);
         Card b("2 + 1","3",1);
         Card c("7 - 2","5",1);*/
 
-        Card d("Hi","Hello",2);
-        Card e("He","Him",2);
-        ;
+        //Card d("Hi","Hello",2);
+        //Card e("He","Him",2);
 
         /*x.createCard(a);
         x.createCard(b);
@@ -48,13 +47,15 @@ int main (){
         //x.deleteCardsByDeckId(2);
 
         //std::vector<Card> a = x.getAllCards();
+       // Date data;
+        //std::vector<Card> a = x.getCardsByDate(data,1);
         //std::vector<Card> a = x.getAllCardsSortedByDate();
         //std::vector<Card> a = x.getCardsByDeckId(1);
-        /*std::vector<Card> a = x.getCardsByDeckIdSortedByDate(1);
+        //std::vector<Card> a = x.getCardsByDeckIdSortedByDate(1);
 
-        for(Card card : a){
+        /*for(Card card : a){
             std::cout << card.getFront() << " " << card.getBack() << " " << card.getDeckId() << " " << card.getId() << " " << card.getLastReview().getDateBystring() << std::endl; 
-        }*/
+        }
        /*
         Audio a;
         a.setId(1);
