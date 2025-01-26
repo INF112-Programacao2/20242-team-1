@@ -61,7 +61,7 @@ int DeckDAO::getDeckID(Deck& deck){
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             deck_id = sqlite3_column_int(stmt, 0);
         } else {
-            throw std::runtime_error("Erro ao preparar consulta: NAO FOI POSSIVEL ENCONTRAR CARD COM ESSE NOME E ASSUNTO");
+            throw std::runtime_error("Erro ao preparar consulta: Nao foi possivel encontrar Deck com esse nome e assunto");
         }
     } else {
         throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
@@ -151,12 +151,12 @@ bool DeckDAO::updateDeck(const Deck& deck){
 }
 
 
-//FALTA CRIAR card.h PARA RESOLVER
+//CRIDOS NO CardDAO!
 /*
 bool DeckDAO::addCardToDeck(int deck_id, int card_id);
 bool DeckDAO::deleteCardFromDeck(int deck_id, int card_id);
 
-//FALTA CRIAR card.h PARA RESOLV
+//CRIDOS NO CardDAO!
 std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
 
 //FALTA CRIAR CONSTRUTOR PADRAO

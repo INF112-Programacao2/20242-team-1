@@ -2,6 +2,9 @@
 #define DATE_H
 
 #include <ctime>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 
 class Date{
     private:
@@ -26,6 +29,7 @@ class Date{
         int getHour() const;
         int getMinute() const;
         int getSecond() const;
+        std::string getDateBystring() const;
 
         // ======= Setters =======
 
@@ -35,6 +39,7 @@ class Date{
         void setHour(int hour);
         void setMinute(int minute);
         void setSecond(int second);
+        void setDateBystring(const std::string& dateStr);
 
         // ======= Methods =======
 

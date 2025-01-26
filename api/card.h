@@ -25,6 +25,7 @@ class Card{
         int getDeckId() const;
         Date getLastReview() const;
 
+
         // ======= Setters =======
 
         void setId(int id);

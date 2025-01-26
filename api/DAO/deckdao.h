@@ -2,6 +2,9 @@
 #define DECKDAO_H
 
 #include "../deck.h"
+#include "../card.h"
+#include "carddao.h"
+
 #include "DatabaseConnection.h"
 #include "sqlite3.h"
 
@@ -30,8 +33,9 @@ public:
     bool deleteDeck(int id);//SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
     bool updateDeck(const Deck& deck);//SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
 
-    //ADICIONAR QUANDO CRIAR CLASSE CARD, AINDA NAO FEITO
+    //CRIDOS NO CardDAO!
     /*
+    int countCardsByDeck(int deck_id);
     bool addCardToDeck(int deck_id, int card_id);
     bool deleteCardFromDeck(int deck_id, int card_id);
     std::array<Card,50> getCardsByDeckId(int deck_id);*/

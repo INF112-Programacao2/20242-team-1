@@ -1,22 +1,60 @@
 //ARQUIVO TESTE!!!
 //PARA RODAR CODIGO: 
-//g++ main.cpp DatabaseConnection.cpp deckdao.cpp ../card.cpp ../deck.cpp sqlite3.dll 
+//g++ main.cpp DatabaseConnection.cpp deckdao.cpp carddao.cpp ../card.cpp ../deck.cpp ../date.cpp sqlite3.dll 
 // Para o linux: (necessário estar na pasta api)
 // g++ deck.cpp ./DAO/deckdao.cpp ./DAO/DatabaseConnection.cpp ./DAO/main.cpp -o out -lsqlite3
 #include "DatabaseConnection.h"
 #include "deckdao.h"
+#include "carddao.h"
 #include "sqlite3.h"
 #include "../card.h"
 #include "../deck.h"
+#include "../date.h"
 
 int main (){
     try{
-    DatabaseConnection a("../dados.db");
-    DeckDAO b(a);
-    std::array<Deck, 50> e= b.getAllDecks();
-    for (int i = 0; i <= 3; ++i) {
-        std::cout << e[i].getTitle()<<"\n" ;
-    }
+        DatabaseConnection z("../../dados.db");//mudar para "../dados.db" linux; mudar para "../../dados.db" windows
+        DeckDAO y(z);
+        CardDAO x(z); 
+        
+        /*Card a("7 + 3","10",1);
+        Card b("2 + 1","3",1);
+        Card c("7 - 2","5",1);*/
+
+        Card d("Hi","Hello",2);
+        Card e("He","Him",2);
+        ;
+
+        /*x.createCard(a);
+        x.createCard(b);
+        x.createCard(c);*/
+        
+       /* x.createCard(d);
+        x.createCard(e);*/
+        
+        //x.createCard(f);
+
+        //x.deleteCard(1);
+
+        /*Card f("7+7","14",1);
+        f.setId(2);
+        x.updateCard(f);*/
+
+        //x.deleteCardsByDeckId(2);
+
+        //std::vector<Card> a = x.getAllCards();
+        //std::vector<Card> a = x.getAllCardsSortedByDate();
+        //std::vector<Card> a = x.getCardsByDeckId(1);
+        /*std::vector<Card> a = x.getCardsByDeckIdSortedByDate(1);
+
+        for(Card card : a){
+            std::cout << card.getFront() << " " << card.getBack() << " " << card.getDeckId() << " " << card.getId() << " " << card.getLastReview().getDateBystring() << std::endl; 
+        }*/
+
+       
+
+        
+
     }catch (const std::exception& e){
         std::cerr << "Excecao capturada: " << e.what() << std::endl;
     }
