@@ -3,13 +3,13 @@
 
 #include "media.h"
 
-class Audio : Media {
+class Audio : public Media {
     private:
         float durationInSeconds;        // Duração do áudio em segundos
         std::string transcription;      // Transcrição do áudio
     public:
         Audio();
-        Audio(int id, std::string name, std::string path);
+        Audio(float durationInSeconds,std::string transcription);
         ~Audio() = default;
 
         // ======= Getters =======

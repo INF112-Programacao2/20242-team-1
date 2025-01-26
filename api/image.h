@@ -4,7 +4,7 @@
 #include "media.h"
 #include <string>
 
-class Image : Media {
+class Image : public  Media {
     private:
         int id;                        // Identificador da imagem
         int width;                     // Largura da imagem
