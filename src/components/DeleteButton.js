@@ -19,7 +19,6 @@ function DeleteButton({ url }) {
                   method: 'DELETE',
                 });
                 const result = await response.json();
-                console.log(result)
                 if(result){
                     window.location.reload(); 
                 }
