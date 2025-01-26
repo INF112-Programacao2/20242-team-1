@@ -15,6 +15,7 @@ class Card{
     public:
         Card();
         Card(std::string front, std::string back, int deck_id);
+        Card(std::string front, std::string back, Date lastReview);
         ~Card() = default;
 
         // ======= Getters =======

@@ -40,7 +40,8 @@ app.get('/api/deck/:id', (req, res) => {
   const id = Number(req.params.id);
   try {
     const deck = addon.getDeckById(id);
-    res.json(deck);
+    const cards = addon.getCardAll(id);
+    res.json({...deck, cards});
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
   }
@@ -70,15 +71,72 @@ app.post('/api/deck', (req, res) => {
 //Atualiza o Deck
 app.put('/api/deck/:id', (req, res) => {
   const id = Number(req.params.id);
-  const {title,subject } = req.body
+  const { title, subject } = req.body
   try {
-    const data = addon.createUpdateDeck(title,subject,id);
+    const data = addon.createUpdateDeck(title, subject, id);
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
   }
 
 });
+// Pega todos os cards por id 
+app.get('/api/card/:id', (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const cards = addon.getCardById(id);
+    res.json(cards);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+app.delete('/api/card/:id', (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const data = addon.deleteDeck(id);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+//Criar novo Deck
+app.post('/api/card', (req, res) => {
+  const {front, back,deckId } = req.body
+  try {
+    const data = addon.createCard(front, back, Number(deckId));
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+//Atualiza o Deck
+app.put('/api/card/lastreview/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const { front, back, deckId, mes, dia, hora, min } = req.body
+  try {
+    const data = addon.createUpdateDeck(id, front, back, deckId, mes, dia, hora, min);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+//Atualiza o Card
+app.put('/api/card/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const { front, back} = req.body
+  try {
+    const data = addon.updateCard(id,front,back);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+
 
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {
@@ -100,42 +158,6 @@ app.post('/api/upload', (req, res) => {
   });
 });
 
-app.post('/api/card/edit/:id', (req, res) => {
-  const id = req.params.id;
-  let editCard = {};
-  if (req.card) {
-    const card = req.card;
-    //salva o alteração no card
-    if (card.back) {
-      res.sendStatus(200);
-    }
-  }
-  if (req.file) {
-    const file = req.file
-    let cardFile = {
-      path: `/src/assets/uploads`,
-      name: file.name,
-      type: file.type,
-      caption: file.caption,
-
-    }
-    //chamar edição de CardImage
-  } else if (req.audio) {
-    //chamar edição de CardAudio
-  }
-  console.log(`edit card ${id}`);
-  // Chamar função C++ ou lógica
-  // retornar 
-  res.json();
-});
-
-// Rota para obter informações de um card
-app.get('/api/card/:id', (req, res) => {
-  const id = req.params.id;
-  console.log(`get card ${id}`);
-  // Chamar função C++ ou lógica
-  res.json({ id: id, front: `front card ${id}`, back: `back card ${id}` });
-});
 
 // Inicia o servidor
 app.listen(port, () => {

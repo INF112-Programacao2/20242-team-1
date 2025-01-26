@@ -71,14 +71,6 @@ const DeckEdit = () => {
         );
     }
 
-    const cards = [
-        { front: 'front', id: 1 },
-        { front: 'front', id: 2 },
-        { front: 'front', id: 3 },
-        { front: 'front', id: 4 },
-        { front: 'front', id: 5 },
-    ];
-
     return (
         <Container>
             <h2>{id === undefined ? "Novo Baralho" : "Edição"}</h2>
@@ -131,7 +123,7 @@ const DeckEdit = () => {
 
                         {id !== undefined && (
                             <Form.Group className="mb-3">
-                                <CardsList cards={cards} />
+                                <CardsList id={id} cards={data.cards?? []} />
                             </Form.Group>
                         )}
 

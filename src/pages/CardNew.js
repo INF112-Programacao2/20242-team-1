@@ -13,10 +13,9 @@ import AudioInputPlayer from '../components/AudioInputPlayer';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const CardEdit = () => {
+const CardNew = () => {
     const { id } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [cardType, setCardType] = useState(0);
     const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
@@ -53,25 +52,6 @@ const CardEdit = () => {
         return schemas[cardType];
     };
 
-    useEffect(() => {
-        async function fetchData() {
-            if (id) {
-                try {
-                    const response = await fetch(`http://localhost:3000/api/card/${id}`);
-                    const result = await response.json();
-                    setData(result);
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                } finally {
-                    setLoading(false);
-                }
-            } else {
-                setLoading(false);
-            }
-        }
-
-        fetchData();
-    }, [id]);
 
     if (loading) {
         return (
@@ -81,22 +61,15 @@ const CardEdit = () => {
         );
     }
 
-    if (!data && id) {
-        return (
-            <Container>
-                <h2>No data found</h2>
-            </Container>
-        );
-    }
 
     return (
         <Container>
-            <h2> 'Edição'</h2>
+            <h2>Novo Cartão</h2>
             <Formik
                 initialValues={{
-                    front: data?.front || '',
-                    back: data?.back?? '',
-                    file: data?.file ?? null,
+                    front:  '',
+                    back: '',
+                    file:  null,
                     audio: null,
                 }}
                 validationSchema={getValidationSchema()}
@@ -104,14 +77,15 @@ const CardEdit = () => {
                     const formData = new FormData();
                     let url =''
                     formData.append('front', values.front);
+                    formData.append('deckId', id);
                     if(cardType==0){
                         formData.append('back', values.back);
-                        url= 'card'
+                        url= '/card'
                     }
 
                     try {
-                        const response = await fetch(`http://localhost:3000/api/${url}/${id}`, {
-                            method:'PUT',
+                        const response = await fetch(`http://localhost:3000/api${url}`, {
+                            method:'POST',
                             body: formData,
                         });
                         if (!response.ok) {
@@ -218,4 +192,4 @@ const CardEdit = () => {
     );
 };
 
-export default CardEdit;
+export default CardNew;

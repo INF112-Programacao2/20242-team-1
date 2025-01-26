@@ -30,6 +30,20 @@ Card::Card(std::string front, std::string back, int deck_id){
 }
 
 /*
+* @brief Construtor da classe Card, que inicia uma carta com frente, verso e id do baralho
+* @param std::string Texto da frente da carta
+* @param std::string Texto do verso da carta
+* @param Date data da proxima revisão
+* @return void
+*/
+Card::Card(std::string front, std::string back, Date lastReview){
+    this->id = 0;
+    this->front = front;
+    this->back = back;
+    this->lastReview = lastReview;
+};
+
+/*
 * @brief Método que retorna o id da carta
 * @param void
 * @return int Id da carta

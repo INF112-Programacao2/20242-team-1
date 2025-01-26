@@ -9,6 +9,7 @@ import DeckEdit from "./DeckEdit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/main.scss'
 import CardEdit from "./CardEdit";
+import CardNew from "./CardNew";
 
 function App() {
     return (
@@ -20,7 +21,8 @@ function App() {
                 <Route path="/deck/:id" element={<CardsReview />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/edit/deck/:id?" element={<DeckEdit />} />
-                <Route path="/card/:id?" element={<CardEdit/>} />
+                <Route path="/card/edit/:id" element={<CardEdit/>} />
+                <Route path="/card/new/:id" element={<CardNew/>} />
             </Routes>
         </BrowserRouter>
     );
