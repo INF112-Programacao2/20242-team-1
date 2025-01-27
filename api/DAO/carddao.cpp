@@ -1,4 +1,3 @@
-
 #include "carddao.h"
 
 CardDAO::CardDAO(DatabaseConnection& database) : db(database) {} 
@@ -39,15 +38,18 @@ bool CardDAO::cardExists(int id) {
     return exists;
 }
 
-int CardDAO::countCards() {
+int CardDAO::countCards(int deck_id) {
+    Date date;
     int count = 0;
-    std::string sql = "SELECT COUNT(*) FROM cards;";
+    std::string sql = "SELECT COUNT(*) FROM cards WHERE lastReview < ? AND deck_id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
             throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
         }
+        sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 2, deck_id);
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             count = sqlite3_column_int(stmt, 0);
@@ -173,7 +175,8 @@ Card CardDAO::getCardById(int id) {
     return card;
 }
 
-std::vector<Card> CardDAO::getCardsByDate(const Date date,int deck_id) {
+std::vector<Card> CardDAO::getCardsByDate(int deck_id) {
+    Date date;
     std::vector<Card> cards;
     std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE lastReview < ? AND deck_id=?;";
     sqlite3_stmt* stmt = nullptr;
@@ -185,11 +188,6 @@ std::vector<Card> CardDAO::getCardsByDate(const Date date,int deck_id) {
         }
         sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 2, deck_id);
-
-        if (sqlite3_step(stmt) != SQLITE_ROW) {
-            throw std::runtime_error("Erro ao vincular data na consulta SQL.");
-
-        }
 
         // Itera sobre os resultados
         while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -366,6 +364,7 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
     if (stmt) {
         sqlite3_finalize(stmt);
     }
+    SortDate(cards);
     return cards;
 }
 std::vector<Card> CardDAO::getCardsByDeckIdSortedByDate(int deck_id){

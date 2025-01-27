@@ -19,7 +19,7 @@ class Card{
         ~Card() = default;
 
         // ======= Getters =======
-
+        Card& operator=(const Card& other) = default;
         int getId() const;
         std::string getFront() const;
         std::string getBack() const;

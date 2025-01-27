@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/decks', {
+        const response = await fetch('http://localhost:3000/api/decks/reviews', {
           headers: {
             'Cache-Control': 'no-store',
           }

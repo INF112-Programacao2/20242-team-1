@@ -35,6 +35,16 @@ app.get('/api/decks', (req, res) => {
   }
 
 });
+// Pega todos os baralhos e a quantidade de revisões
+app.get('/api/decks/reviews', (req, res) => {
+  try {
+    const decks = addon.getContReviews();
+    res.json(decks);
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
 // Pega todos um baralho por id 
 app.get('/api/deck/:id', (req, res) => {
   const id = Number(req.params.id);
@@ -42,6 +52,18 @@ app.get('/api/deck/:id', (req, res) => {
     const deck = addon.getDeckById(id);
     const cards = addon.getCardAll(id);
     res.json({...deck, cards});
+  } catch (error) {
+    console.error('Erro ao criar conexão:', error.message);
+  }
+
+});
+
+// Pega um baralho e as revisões por id 
+app.get('/api/card/reviews/:id', (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const cards = addon.getCardReviews(id);
+    res.json(cards);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
   }
@@ -94,7 +116,7 @@ app.get('/api/card/:id', (req, res) => {
 app.delete('/api/card/:id', (req, res) => {
   const id = Number(req.params.id);
   try {
-    const data = addon.deleteDeck(id);
+    const data = addon.deleteCard(id);
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
@@ -112,12 +134,12 @@ app.post('/api/card', (req, res) => {
   }
 
 });
-//Atualiza o Deck
+//Todo
 app.put('/api/card/lastreview/:id', (req, res) => {
   const id = Number(req.params.id);
-  const { front, back, deckId, mes, dia, hora, min } = req.body
+  const {  day, month, year, hour,minute,second } = req.body
   try {
-    const data = addon.createUpdateDeck(id, front, back, deckId, mes, dia, hora, min);
+    const data = addon.updateCardLastReview(id,  Number(day), Number(month), Number(year), Number(hour),Number(minute),Number(second));
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
