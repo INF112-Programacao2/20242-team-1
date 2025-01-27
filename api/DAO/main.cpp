@@ -19,13 +19,6 @@
 #include "../cardaudio.h"
 #include "../cardimage.h"
 
-#include "../date.h"
-#include "../audio.h"
-#include "../image.h"
-#include "../media.h"
-
-
-
 
 
 int main (){
@@ -38,13 +31,13 @@ int main (){
         CardImage cardd("front","back",1);
         cardd.setImage(img);
         CardImageDAO.createCardImage(cardd);
-
         //Audio au("Casa2","legenda2",10,"caminho2");
         //CardAudio cad("front2","back2",1);
         //cad.setAudio(au);
         //CardAudioDAO.createCardAudio(cad);
 
        // CardAudioDAO.deleteCardAudio(1);
+
 
     }catch (const std::exception& e){
         std::cerr << "Excecao capturada: " << e.what() << std::endl;
