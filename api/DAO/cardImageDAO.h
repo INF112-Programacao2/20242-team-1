@@ -32,6 +32,7 @@ public:
     Date getDateByCardImageId(int card_id);//OLHA O ID DA CARTA E RETORNA O lastReview;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR O ID IRA LANCAR std::invalid_argument
     Image getImageByCardImageId(int card_id);
     CardImage getCardImageByImage(Image Image);
+    std::vector<CardImage> getCardsByDate(const Date date,int deck_id);
 
     std::vector<CardImage> getAllCardsImage(); //RETORNA UM VECTOR COM TODAS AS CARTAS NOS DADOS;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     std::vector<CardImage> getAllCardsImageSortedByDate();

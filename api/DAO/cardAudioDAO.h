@@ -32,11 +32,13 @@ public:
     Date getDateByCardAudioId(int card_id);//OLHA O ID DA CARTA E RETORNA O lastReview;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR O ID IRA LANCAR std::invalid_argument
     Audio getAudioByCardAudioId(int card_id);
     CardAudio getCardAudioByAudio(Audio Audio);
+    
 
     std::vector<CardAudio> getAllCardsAudio(); //RETORNA UM VECTOR COM TODAS AS CARTAS NOS DADOS;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     std::vector<CardAudio> getAllCardsAudioSortedByDate();
     std::vector<CardAudio> getCardsAudioByDeckId(int deck_id); // OLHA O ID FORNECIDO E RETORNA UM VECTOR COM TODAS AS CARTAS DESSE DECK;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     std::vector<CardAudio> getCardsAudioByDeckIdSortedByDate(int deck_id);// OLHA O ID FORNECIDO E RETORNA UM VECTOR COM TODAS AS CARTAS DESSE DECK ORDENADAS PELA DATA;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
+    std::vector<CardAudio> getCardsAudioByDate(const Date date,int deck_id);
     
 
     bool createCardAudio(CardAudio& card);//USA A CARTA FORNECIDA PARA CRIAR UMA NOVA, O NOVO ID SERA COLOCADO NA CARTA FORNECIDA E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error

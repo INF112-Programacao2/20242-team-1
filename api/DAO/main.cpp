@@ -32,11 +32,19 @@ int main (){
     try{
         DatabaseConnection db("../../dados.db");//mudar para "../dados.db" linux; mudar para "../../dados.db" windows
         CardAudioDAO CardAudioDAO(db);
+        CardImageDAO CardImageDAO(db);
         
-        Audio au("Casa","legenda",10,"caminho");
-        CardAudio cad("front","back",1);
-        cad.setAudio(au);
-        CardAudioDAO.createCardAudio(cad);
+        Image img(10,10,"nome","legenda","path");
+        CardImage cardd("front","back",1);
+        cardd.setImage(img);
+        CardImageDAO.createCardImage(cardd);
+
+        //Audio au("Casa2","legenda2",10,"caminho2");
+        //CardAudio cad("front2","back2",1);
+        //cad.setAudio(au);
+        //CardAudioDAO.createCardAudio(cad);
+
+        CardAudioDAO.deleteCardAudio(1);
 
     }catch (const std::exception& e){
         std::cerr << "Excecao capturada: " << e.what() << std::endl;

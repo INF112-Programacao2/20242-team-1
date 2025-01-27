@@ -31,6 +31,7 @@ public:
     std::vector<Card> getAllCardsSortedByDate();
     std::vector<Card> getCardsByDeckId(int deck_id); // OLHA O ID FORNECIDO E RETORNA UM VECTOR COM TODAS AS CARTAS DESSE DECK;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     std::vector<Card> getCardsByDeckIdSortedByDate(int deck_id);// OLHA O ID FORNECIDO E RETORNA UM VECTOR COM TODAS AS CARTAS DESSE DECK ORDENADAS PELA DATA;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
+    std::vector<Card> getCardsByDate(const Date date,int deck_id);
     
 
     bool createCard(Card& card);//USA A CARTA FORNECIDA PARA CRIAR UMA NOVA, O NOVO ID SERA COLOCADO NA CARTA FORNECIDA E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
