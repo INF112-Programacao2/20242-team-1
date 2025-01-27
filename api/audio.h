@@ -9,13 +9,13 @@ class Audio : public Media {
         std::string transcription;      // Transcrição do áudio
     public:
         Audio();
-        Audio(float durationInSeconds,std::string transcription);
+        Audio(std::string name,std::string path,float durationInSeconds,std::string transcription);
         ~Audio() = default;
 
         // ======= Getters =======
 
-        float getDurationInSeconds() const;
-        std::string getTranscription() const;
+        float getDurationInSeconds();
+        std::string getTranscription();
 
         // ======= Setters =======
 

@@ -1,6 +1,6 @@
 #include "audio.h"
 Audio::Audio() {};
-Audio::Audio(float durationInSeconds, std::string transcription)
+Audio::Audio(std::string name,std::string path,float durationInSeconds,std::string transcription): Media(name,path)
 {
     this->durationInSeconds = durationInSeconds;
     this->transcription = transcription;
@@ -8,11 +8,11 @@ Audio::Audio(float durationInSeconds, std::string transcription)
 
 // ======= Getters =======
 
-float Audio::getDurationInSeconds() const
+float Audio::getDurationInSeconds()
 {
     return this->durationInSeconds;
 };
-std::string Audio::getTranscription() const
+std::string Audio::getTranscription()
 {
     return this->transcription;
 };

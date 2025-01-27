@@ -14,7 +14,7 @@ private:
 
 public:
     Media();
-    Media(int id, std::string name, std::string path);
+    Media(std::string name_, std::string path_);
     ~Media() = default;
 
     // ======= Getters =======

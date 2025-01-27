@@ -1,17 +1,17 @@
 
-#include "carddao.h"
+#include "cardAudioDAO.h"
 
-CardDAO::CardDAO(DatabaseConnection& database) : db(database) {} 
+CardAudioDAO::CardAudioDAO(DatabaseConnection& database) : db(database) {} 
 
-void CardDAO::SortDate(std::vector<Card>& cards) {
+void CardAudioDAO::SortDate(std::vector<CardAudio>& cards) {
     std::sort(cards.begin(), cards.end(), [](const Card& a, const Card& b) {
         return a.getLastReview().getDateBystring() < b.getLastReview().getDateBystring();
     });
 }
 
-bool CardDAO::cardExists(int id) {
+bool CardAudioDAO::cardAudioExists(int id) {
     bool exists = false;
-    std::string sql = "SELECT COUNT(*) FROM cards WHERE id = ?;";
+    std::string sql = "SELECT COUNT(*) FROM cardsaudio WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -30,7 +30,7 @@ bool CardDAO::cardExists(int id) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-        throw std::runtime_error("Erro em cardExists: " + std::string(e.what()));
+        throw std::runtime_error("Erro em cardaudioExists: " + std::string(e.what()));
     }
     if (stmt) {
         sqlite3_finalize(stmt);
@@ -39,9 +39,9 @@ bool CardDAO::cardExists(int id) {
     return exists;
 }
 
-int CardDAO::countCards() {
+int CardAudioDAO::countCardsAudio() {
     int count = 0;
-    std::string sql = "SELECT COUNT(*) FROM cards;";
+    std::string sql = "SELECT COUNT(*) FROM cardsaudio;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -58,7 +58,7 @@ int CardDAO::countCards() {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-        throw std::runtime_error("Erro em countCards: " + std::string(e.what()));
+        throw std::runtime_error("Erro em countCardsAudio: " + std::string(e.what()));
     }
     if (stmt) {
         sqlite3_finalize(stmt);
@@ -67,9 +67,9 @@ int CardDAO::countCards() {
     return count;
 }
 
-int CardDAO::countCardsByDeck(int deck_id) {
+int CardAudioDAO::countCardsAudioByDeck(int deck_id) {
     int count = 0;
-    std::string sql = "SELECT COUNT(*) FROM cards WHERE deck_id = ?;";
+    std::string sql = "SELECT COUNT(*) FROM cardsaudio WHERE deck_id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -88,7 +88,7 @@ int CardDAO::countCardsByDeck(int deck_id) {
         if (stmt) {
             sqlite3_finalize(stmt);  // Liberação do recurso no caso de erro
         }
-        throw std::runtime_error("Exceção capturada em countCardsByDeck: " + std::string(e.what()));
+        throw std::runtime_error("Exceção capturada em countCardsAudioByDeck: " + std::string(e.what()));
     }
     if (stmt) {
         sqlite3_finalize(stmt);  // Garante a liberação de recursos sempre
@@ -97,11 +97,11 @@ int CardDAO::countCardsByDeck(int deck_id) {
 }
 
 
-int CardDAO::getCardIdByCard(Card& card){
+int CardAudioDAO::getCardAudioIdByCardAudio(CardAudio& card){
     int card_id = -1;  // Valor padrão para indicar erro caso não encontre
 
-    std::string sql = "SELECT id FROM Deck WHERE front = ? AND back = ?;";
-    sqlite3_stmt* stmt;
+    std::string sql = "SELECT id FROM cardsaudio WHERE front = ? AND back = ?;";
+    sqlite3_stmt* stmt = nullptr;
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -114,13 +114,13 @@ int CardDAO::getCardIdByCard(Card& card){
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             card_id = sqlite3_column_int(stmt, 0);
         } else {
-            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar o card com esse nome e assunto.");
+            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar o cardAudio com esse nome e assunto.");
         }
     } catch (const std::exception& e) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-        throw std::runtime_error("Exceção capturada em getCardIdByCard: " + std::string(e.what()));
+        throw std::runtime_error("Exceção capturada em getCardIdByCardAudio: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -128,9 +128,40 @@ int CardDAO::getCardIdByCard(Card& card){
     }
     return card_id;
 }
-Card CardDAO::getCardById(int id) {
-    Card card;  // Objeto vazio para retorno padrão caso não encontre nada
-    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE id = ?;";
+int CardAudioDAO::getAudioIdByCardAudioId(int card_id){
+    int audio_id = -1;  // Valor padrão para indicar erro caso não encontre
+
+    std::string sql = "SELECT audioId FROM cardsaudio WHERE id = ?;";
+    sqlite3_stmt* stmt = nullptr;
+
+    try {
+        if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
+        }
+
+        sqlite3_bind_int(stmt,1,card_id);
+
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            audio_id = sqlite3_column_int(stmt, 0);
+        } else {
+            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar o cardAudio com esse id.");
+        }
+    } catch (const std::exception& e) {
+        if (stmt) {
+        sqlite3_finalize(stmt);
+        }
+        throw std::runtime_error("Exceção capturada em getCardIdByCardAudio: " + std::string(e.what()));
+    }
+
+    if (stmt) {
+        sqlite3_finalize(stmt);
+    }
+    return audio_id;
+}
+
+CardAudio CardAudioDAO::getCardAudioById(int id) {
+    CardAudio card;  // Objeto vazio para retorno padrão caso não encontre nada
+    std::string sql = "SELECT id, front, back, deck_id, lastReview, audioId FROM cardsaudio WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -157,14 +188,20 @@ Card CardDAO::getCardById(int id) {
                 a.setDateBystring(lastReviewText);
                 card.setLastReview(a);
             }
+            
+            card.setAudioId(sqlite3_column_int(stmt, 5));
+            
+            AudioDAO a(db);
+            card.setAudio(a.getAudioById(card.getAudioId()));
+
         } else {
-            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar card com este ID.");
+            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar CardAudio com este ID.");
         }
     } catch (const std::exception& e) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-        throw std::runtime_error("Exceção capturada em getCardById: " + std::string(e.what()));
+        throw std::runtime_error("Exceção capturada em getCardAudioById: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -172,9 +209,9 @@ Card CardDAO::getCardById(int id) {
     }
     return card;
 }
-Card CardDAO::getCardByDate(Date date){
-    Card card;
-    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE lastReview = ?;";
+CardAudio CardAudioDAO::getCardAudioByDate(Date date){
+    CardAudio card;
+    std::string sql = "SELECT id, front, back, deck_id, lastReview, audioId FROM cardsaudio WHERE lastReview = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -202,15 +239,22 @@ Card CardDAO::getCardByDate(Date date){
                 Date a;
                 a.setDateBystring(lastReviewText);
                 card.setLastReview(a);
+            }else {
+                throw std::runtime_error("Erro ao obter valor da coluna lastReview.");
             }
+
+            card.setAudioId(sqlite3_column_int(stmt, 5));
+            
+            AudioDAO a(db);
+            card.setAudio(a.getAudioById(card.getAudioId()));
         } else {
-             throw std::invalid_argument("Nenhum card encontrado com a data fornecida.");
+             throw std::invalid_argument("Nenhum CardAudio encontrado com a data fornecida.");
         }
     } catch (const std::exception& e) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-         throw std::runtime_error("Erro em getCardByDate: " + std::string(e.what()));
+         throw std::runtime_error("Erro em getCardAudioByDate: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -218,9 +262,9 @@ Card CardDAO::getCardByDate(Date date){
     }
     return card;
 }
-Date CardDAO::getDateByCardId(int card_id){
+Date CardAudioDAO::getDateByCardAudioId(int card_id){
     Date date;  // Objeto vazio para retorno padrão caso não encontre nada
-    std::string sql = "SELECT lastReview FROM cards WHERE id = ?;";
+    std::string sql = "SELECT lastReview FROM cardsaudio WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
@@ -228,21 +272,25 @@ Date CardDAO::getDateByCardId(int card_id){
             throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
         }
 
-        sqlite3_bind_int(stmt, 1, card_id);
+        if (sqlite3_bind_int(stmt, 1, card_id) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao vincular card_id na consulta SQL.");
+        }
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             const char* lastReviewText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
             if (lastReviewText) {
                 date.setDateBystring(lastReviewText);
+            } else {
+                throw std::runtime_error("Erro ao obter valor da coluna lastReview.");
             }
         } else {
-            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar card com este ID.");
+            throw std::invalid_argument("Erro ao executar consulta: Não foi possível encontrar cardaudio com este ID.");
         }
     } catch (const std::exception& e) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-        throw std::runtime_error("Exceção capturada em getDateByCardId: " + std::string(e.what()));
+        throw std::runtime_error("Exceção capturada em getDateByCardAudioId: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -251,10 +299,11 @@ Date CardDAO::getDateByCardId(int card_id){
     return date;
 }
 
-std::vector<Card> CardDAO::getAllCards(){
-    std::vector<Card> cards;
-    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards;";
+std::vector<CardAudio> CardAudioDAO::getAllCardsAudio(){
+    std::vector<CardAudio> cards;
+    std::string sql = "SELECT id, front, back, deck_id, lastReview, audioId FROM cardsaudio;";
     sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -262,32 +311,36 @@ std::vector<Card> CardDAO::getAllCards(){
         }
         
         while (sqlite3_step(stmt) == SQLITE_ROW){
-                Card card;
+            CardAudio card;
 
-                card.setId(sqlite3_column_int(stmt, 0));
+            card.setId(sqlite3_column_int(stmt, 0));
 
-                const char* frontText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-                card.setFront(frontText ? frontText : "");
+            const char* frontText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+            card.setFront(frontText ? frontText : "");
 
-                const char* backText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-                card.setBack(backText ? backText : "");
+            const char* backText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+            card.setBack(backText ? backText : "");
 
-                card.setDeckId(sqlite3_column_int(stmt, 3));
+            card.setDeckId(sqlite3_column_int(stmt, 3));
 
-                const char* lastReviewText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-                if (lastReviewText) {
-                    Date a;
-                    a.setDateBystring(lastReviewText);
-                    card.setLastReview(a);
-                }
-
-                cards.push_back(card);
+            const char* lastReviewText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+            if (lastReviewText) {
+                Date a;
+                a.setDateBystring(lastReviewText);
+                card.setLastReview(a);
             }
+
+            card.setAudioId(sqlite3_column_int(stmt, 5));
+            
+            card.setAudio(a.getAudioById(card.getAudioId()));
+
+            cards.push_back(card);
+        }
     } catch (const std::exception& e) {
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-         throw std::runtime_error("Erro em getAllCards: " + std::string(e.what()));
+         throw std::runtime_error("Erro em getAllCardsAudio: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -295,18 +348,19 @@ std::vector<Card> CardDAO::getAllCards(){
     }
     return cards;
 }
-std::vector<Card> CardDAO::getAllCardsSortedByDate(){
-    std::vector<Card> cards;
-    cards = getAllCards();
+std::vector<CardAudio> CardAudioDAO::getAllCardsAudioSortedByDate(){
+    std::vector<CardAudio> cards;
+    cards = getAllCardsAudio();
     
     SortDate(cards);
 
     return cards;
 }
-std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
-    std::vector<Card> cards;
-    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE deck_id = ?;";
+std::vector<CardAudio> CardAudioDAO::getCardsAudioByDeckId(int deck_id){
+    std::vector<CardAudio> cards;
+    std::string sql = "SELECT id, front, back, deck_id, lastReview, audioId FROM cardsaudio WHERE deck_id = ?;";
     sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -318,7 +372,7 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
         }
 
         while (sqlite3_step(stmt) == SQLITE_ROW){
-                Card card;
+                CardAudio card;
 
                 card.setId(sqlite3_column_int(stmt, 0));
 
@@ -332,10 +386,13 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
 
                 const char* lastReviewText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
                 if (lastReviewText) {
-                    Date a;
-                    a.setDateBystring(lastReviewText);
-                    card.setLastReview(a);
+                    Date b;
+                    b.setDateBystring(lastReviewText);
+                    card.setLastReview(b);
                 }
+                card.setAudioId(sqlite3_column_int(stmt, 5));
+            
+                card.setAudio(a.getAudioById(card.getAudioId()));
 
                 cards.push_back(card);
             }
@@ -343,7 +400,7 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-         throw std::runtime_error("Erro em getCardsByDeckId: " + std::string(e.what()));
+         throw std::runtime_error("Erro em getCardsAudioByDeckId: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -351,9 +408,9 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
     }
     return cards;
 }
-std::vector<Card> CardDAO::getCardsByDeckIdSortedByDate(int deck_id){
-    std::vector<Card> cards;
-    cards = getCardsByDeckId(deck_id);
+std::vector<CardAudio> CardAudioDAO::getCardsAudioByDeckIdSortedByDate(int deck_id){
+    std::vector<CardAudio> cards;
+    cards = getCardsAudioByDeckId(deck_id);
     
     SortDate(cards);
 
@@ -361,9 +418,10 @@ std::vector<Card> CardDAO::getCardsByDeckIdSortedByDate(int deck_id){
 }
     
 
-bool CardDAO::createCard(Card& card){
-    std::string sql = "INSERT INTO cards (front, back, deck_id, lastReview) VALUES (?, ?,?,?);";
-    sqlite3_stmt* stmt;
+bool CardAudioDAO::createCardAudio(CardAudio& card){
+    std::string sql = "INSERT INTO cardsaudio (front, back, deck_id, lastReview, audioId) VALUES (?, ?,?,?,?);";
+    sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -371,10 +429,15 @@ bool CardDAO::createCard(Card& card){
         }
 
         // Vincula os valores
-        sqlite3_bind_text(stmt, 1, card.getFront().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, card.getBack().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 3, card.getDeckId());
-        sqlite3_bind_text(stmt, 4, card.getLastReview().getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
+        a.createAudio(card.getAudio());
+        card.setAudioId(card.getAudio().getId());
+        if (sqlite3_bind_text(stmt, 1, card.getFront().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_text(stmt, 2, card.getBack().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_int(stmt, 3, card.getDeckId()) != SQLITE_OK ||
+            sqlite3_bind_text(stmt, 4, card.getLastReview().getDateBystring().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_int(stmt, 5, card.getAudioId()) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao vincular parâmetros à consulta SQL.");
+        }
 
         // Executa a consulta
         if (sqlite3_step(stmt) != SQLITE_DONE) {
@@ -391,7 +454,7 @@ bool CardDAO::createCard(Card& card){
         if (stmt) {
         sqlite3_finalize(stmt);
         }
-         throw std::runtime_error("Erro em createCard: " + std::string(e.what()));
+         throw std::runtime_error("Erro em createCardAudio: " + std::string(e.what()));
     }
 
     if (stmt) {
@@ -399,43 +462,51 @@ bool CardDAO::createCard(Card& card){
     }
     return true;
 }
-bool CardDAO::updateCard(const Card& card) {
-    std::string sql = "UPDATE cards SET front = ?, back = ?, deck_id = ?, lastReview = ? WHERE id = ?;";
+bool CardAudioDAO::updateCardAudio(CardAudio& card) {
+    std::string sql = "UPDATE cardsaudio SET front = ?, back = ?, deck_id = ?, lastReview = ? WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
             throw std::runtime_error("Erro ao preparar consulta de atualização: " + db.getLastError());
         }
 
-        sqlite3_bind_text(stmt, 1, card.getFront().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, card.getBack().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 3, card.getDeckId());
-        sqlite3_bind_text(stmt, 4, card.getLastReview().getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 5, card.getId());
+        if (sqlite3_bind_text(stmt, 1, card.getFront().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_text(stmt, 2, card.getBack().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_int(stmt, 3, card.getDeckId()) != SQLITE_OK ||
+            sqlite3_bind_text(stmt, 4, card.getLastReview().getDateBystring().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+            sqlite3_bind_int(stmt, 5, card.getId()) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao vincular parâmetros à consulta SQL.");
+        }
+
+        if (!(a.updateAudio(card.getAudio()))) {
+            throw std::runtime_error("Erro ao atualizar a audiom associada ao card.");
+        }
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            throw std::runtime_error("Erro ao atualizar card: " + db.getLastError());
+            throw std::runtime_error("Erro ao atualizar cardAudio: " + db.getLastError());
         }
 
         if (sqlite3_changes(db.getDB()) == 0) {
-            throw std::runtime_error("Erro: Nenhum card foi atualizado, possivelmente o ID fornecido não existe.");
+            throw std::runtime_error("Erro: Nenhum cardAudio foi atualizado, possivelmente o ID fornecido não existe.");
         }
 
         sqlite3_finalize(stmt);
         return true;
     } catch (const std::exception& e) {
         if (stmt) sqlite3_finalize(stmt);
-        throw std::runtime_error("Erro em updateCard: " + std::string(e.what()));
+        throw std::runtime_error("Erro em updateCardAudio: " + std::string(e.what()));
         return false;
     }
 
     if (stmt) sqlite3_finalize(stmt);
     return false;
 }
-bool CardDAO::deleteCard(int id) {
-    std::string sql = "DELETE FROM cards WHERE id = ?;";
+bool CardAudioDAO::deleteCardAudio(int id) {
+    std::string sql = "DELETE FROM cardsaudio WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -444,19 +515,23 @@ bool CardDAO::deleteCard(int id) {
 
         sqlite3_bind_int(stmt, 1, id);
 
+        if(!(a.deleteAudio(getAudioIdByCardAudioId(id)))){
+            throw std::runtime_error("Erro ao excluir Audiom: " + db.getLastError());
+        }
+
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            throw std::runtime_error("Erro ao excluir card: " + db.getLastError());
+            throw std::runtime_error("Erro ao excluir cardAudio: " + db.getLastError());
         }
 
         if (sqlite3_changes(db.getDB()) == 0) {
-            throw std::runtime_error("Erro: Nenhum card foi atualizado, possivelmente o ID fornecido não existe.");
+            throw std::runtime_error("Erro: Nenhum cardAudio foi atualizado, possivelmente o ID fornecido não existe.");
         }
 
         sqlite3_finalize(stmt);
         return true;
     } catch (const std::exception& e) {
         if (stmt) sqlite3_finalize(stmt);
-        throw std::runtime_error("Erro em deleteCard: " + std::string(e.what()));
+        throw std::runtime_error("Erro em deleteCardAudio: " + std::string(e.what()));
         return false;
     }
 
@@ -464,9 +539,10 @@ bool CardDAO::deleteCard(int id) {
     return false;
 }
     
-bool CardDAO::deleteCardsByDeckId(int deck_id) {
-    std::string sql = "DELETE FROM cards WHERE deck_id = ?;";
+bool CardAudioDAO::deleteCardsAudioByDeckId(int deck_id) {
+    std::string sql = "DELETE FROM cardsaudio WHERE deck_id = ?;";
     sqlite3_stmt* stmt = nullptr;
+    AudioDAO a(db);
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -475,12 +551,16 @@ bool CardDAO::deleteCardsByDeckId(int deck_id) {
 
         sqlite3_bind_int(stmt, 1, deck_id);
 
+        if(!(a.deleteAudio(getAudioIdByCardAudioId(deck_id)))){
+            throw std::runtime_error("Erro ao excluir Audiom: " + db.getLastError());
+        }
+
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            throw std::runtime_error("Erro ao excluir cards do deck: " + db.getLastError());
+            throw std::runtime_error("Erro ao excluir cardsAudio do deck: " + db.getLastError());
         }
 
         if (sqlite3_changes(db.getDB()) == 0) {
-            throw std::runtime_error("Erro: Nenhum card foi atualizado, possivelmente o ID fornecido não existe.");
+            throw std::runtime_error("Erro: Nenhum cardAudio foi atualizado, possivelmente o ID fornecido não existe.");
         }
 
         sqlite3_finalize(stmt);

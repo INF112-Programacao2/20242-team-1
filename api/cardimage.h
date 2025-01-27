@@ -4,23 +4,29 @@
 #include "image.h"
 #include "card.h"
 
+#include <string>
+
 class CardImage : public Card{
 
     private:
         Image image; // Imagem do card
+        int image_id;
 
     public:
         CardImage();
-        CardImage(int id, std::string name, std::string path);
+        CardImage(std::string front, std::string back, int deck_id);
         ~CardImage() = default;
 
         // ======= Getters =======
 
-        Image getImage() const;
+        Image& getImage();
+        int getImageId();
+
 
         // ======= Setters =======
 
         void setImage(const Image& image);
+        void setImageId(int image_id);
 
         // ======= Methods =======
 

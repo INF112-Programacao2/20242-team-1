@@ -22,7 +22,7 @@ public:
     int countCards();                       //CONTA QUANTAS CARTAS TEM EM TODO O DATABASE; SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     int countCardsByDeck(int deck_id);      //CONTA QUANTAS CARTAS TEM EM UM DECK ESPECIFICO; ; SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
 
-    int getCardIdByCard(Card card);         //OLHA O FRONT E BACK DE UMA CARTA E RETORNA O ID DELA; SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR A CARTA IRA LANCAR std::invalid_argument
+    int getCardIdByCard(Card& card);         //OLHA O FRONT E BACK DE UMA CARTA E RETORNA O ID DELA; SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR A CARTA IRA LANCAR std::invalid_argument
     Card getCardById(int id);               //OLHA O ID FORNECIDO E RETORNA UM CARD;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR O ID IRA LANCAR std::invalid_argument
     Card getCardByDate(Date date);          //OLHA A DATA FORNECIDA E RETORNA UM CARD;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR A DATA IRA LANCAR std::invalid_argument
     Date getDateByCardId(int card_id);//OLHA O ID DA CARTA E RETORNA O lastReview;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR O ID IRA LANCAR std::invalid_argument
