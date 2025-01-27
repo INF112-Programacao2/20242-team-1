@@ -5,8 +5,8 @@
 
 
  Image::Image(){};
-        Image::Image(int id, std::string name, std::string path){
-
+        Image::Image(int width_,int height_,std::string name_,std::string caption_, std::string path_): width(width_), height(height_),caption(caption_) ,Media(name_,path_){
+            this->id = -1;
         };
 
         // ======= Getters =======

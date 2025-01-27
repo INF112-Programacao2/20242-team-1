@@ -13,7 +13,7 @@ class Image : public  Media {
     
     public:
         Image();
-        Image(int id, std::string name, std::string path);
+        Image(int width_,int height_,std::string name_,std::string caption_, std::string path_);
         ~Image() = default;
 
         // ======= Getters =======

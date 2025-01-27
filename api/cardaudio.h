@@ -8,19 +8,22 @@ class CardAudio : public Card{
 
     private:
         Audio audio; // Áudio do card
+        int audio_id;
 
     public:
         CardAudio();
-        CardAudio(int id, std::string name, std::string path);
+        CardAudio(std::string front, std::string back, int deck_id);
         ~CardAudio() = default;
 
         // ======= Getters =======
 
-        Audio getAudio() const;
+        Audio& getAudio();
+        int getAudioId();
 
         // ======= Setters =======
 
         void setAudio(const Audio& audio);
+        void setAudioId(int audio_id);
 
         // ======= Methods =======
 

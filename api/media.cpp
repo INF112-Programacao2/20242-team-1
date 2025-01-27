@@ -18,8 +18,8 @@ Media::Media() {
 * @param name Nome da mídia
 * @param path Caminho da mídia
 */
-Media::Media(int id, std::string name, std::string path) {
-    this->id = id;
+Media::Media(std::string name, std::string path) {
+    this->id = -1;
     this->name = name;
     this->path = path;
 

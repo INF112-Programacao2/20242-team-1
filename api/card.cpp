@@ -88,6 +88,14 @@ Date Card::getLastReview() const{
     return this->lastReview;
 }
 
+int Card::getAudioId() {
+    return -1;
+}
+
+int Card::getImagemId () {
+    return -1;
+}
+
 /*
 * @brief Método que atualiza o id da carta
 * @param int Id da carta
