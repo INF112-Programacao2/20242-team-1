@@ -1,4 +1,4 @@
-#include "ImageDAO.h"
+#include "imageDAO.h"
 
 ImageDAO::ImageDAO(DatabaseConnection& database): db(database){}
 

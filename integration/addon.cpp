@@ -21,6 +21,17 @@ Napi::Object DeckToJSObject(Napi::Env env, const Deck &deck)
     return deckObj;
 }
 
+Napi::Object CardToJSObject(Napi::Env env, const Card &card)
+{
+    Napi::Object deckObj = Napi::Object::New(env);
+    deckObj.Set("id", Napi::Number::New(env, card.getId()));
+    deckObj.Set("front", Napi::String::New(env, card.getFront()));
+    deckObj.Set("back", Napi::String::New(env, card.getBack()));
+    deckObj.Set("deckId", Napi::Number::New(env, card.getDeckId()));
+    deckObj.Set("lastReview", Napi::String::New(env, card.getLastReview().getDateBystring()));
+    return deckObj;
+}
+
 // Função para obter um Deck por ID
 Napi::Value GetDeckById(const Napi::CallbackInfo &info)
 {
@@ -60,6 +71,66 @@ Napi::Value DeleteDeck(const Napi::CallbackInfo &info)
     {
         bool deck = deckDAO.deleteDeck(deckId);
         return Napi::Boolean::New(env, deck);
+    }
+    catch (const std::exception &e)
+    {
+        Napi::Error::New(env, e.what()).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+}
+// Função para obter todos os Decks
+Napi::Value GetContReviews(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    try
+    {
+        // Criar o array JavaScript
+        std::array<Deck, 50UL> decks = deckDAO.getAllDecks();
+
+        Napi::Array decksArray = Napi::Array::New(env);
+
+        // Preencher o array com objetos Deck convertidos
+        for (size_t i = 0; decks[i].getId() != 0; ++i)
+        {
+            Napi::Object deckObject = DeckToJSObject(env, decks[i]);
+            decksArray[i] = deckObject; // Adiciona o objeto no array
+            int quantity = cardDAO.countCards(decks[i].getId());
+            deckObject.Set("reviews", Napi::Number::New(env, quantity));
+        }
+        return decksArray;
+    }
+    catch (const std::exception &e)
+    {
+        Napi::Error::New(env, e.what()).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+}
+
+// Função para obter todos os Decks
+Napi::Value GetCardReviews(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1 || !info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, "Esperado um ID numérico para o deck").ThrowAsJavaScriptException();
+        return env.Null();
+    }
+
+    int id = info[0].As<Napi::Number>();
+    try
+    {
+        // Criar o array JavaScript
+        std::vector<Card> cards = cardDAO.getCardsByDate(id);
+
+        Napi::Array cardsArray = Napi::Array::New(env);
+
+        // Preencher o array com objetos Deck convertidos
+        for (size_t i = 0; i < cards.size(); ++i)
+        {
+            Napi::Object cardObject = CardToJSObject(env, cards[i]);
+            cardsArray[i] = cardObject; // Adiciona o objeto no array
+        }
+        return cardsArray;
     }
     catch (const std::exception &e)
     {
@@ -128,16 +199,6 @@ Napi::Value CreateUpdateDeck(const Napi::CallbackInfo &info)
     }
 }
 
-Napi::Object CardToJSObject(Napi::Env env, const Card &card)
-{
-    Napi::Object deckObj = Napi::Object::New(env);
-    deckObj.Set("id", Napi::Number::New(env, card.getId()));
-    deckObj.Set("front", Napi::String::New(env, card.getFront()));
-    deckObj.Set("back", Napi::String::New(env, card.getBack()));
-    deckObj.Set("deckId", Napi::Number::New(env, card.getDeckId()));
-    deckObj.Set("lastReviwe", Napi::String::New(env, card.getLastReview().getDateBystring()));
-    return deckObj;
-}
 
 // Função para obter um Deck por ID
 Napi::Value GetCardById(const Napi::CallbackInfo &info)
@@ -250,21 +311,25 @@ Napi::Value CreateCard(const Napi::CallbackInfo &info)
 Napi::Value UpdateCardLastReview(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-    if (info.Length() < 5 || !info[0].IsNumber() || !info[1].IsNumber() || !info[2].IsNumber() || !info[3].IsNumber() || !info[4].IsNumber())
+    if (info.Length() < 7 || !info[0].IsNumber() || !info[1].IsNumber() || !info[2].IsNumber() || !info[3].IsNumber() || !info[4].IsNumber() || !info[5].IsNumber() || !info[6].IsNumber())
     {
-        Napi::TypeError::New(env, "Esperadas Entradad para Card").ThrowAsJavaScriptException();
+        Napi::TypeError::New(env, "Esperadas Entradas para atualizar lastReview em Card").ThrowAsJavaScriptException();
         return env.Null();
     }
     // void updateDate(int day, int month, int year, int hour, int minute, int second);
     int id = info[0].As<Napi::Number>();
-    int mes = info[1].As<Napi::Number>();
-    int dia = info[2].As<Napi::Number>();
-    int hora = info[3].As<Napi::Number>();
-    int min = info[4].As<Napi::Number>();
+    int day = info[1].As<Napi::Number>();
+    int month = info[2].As<Napi::Number>();
+    int year = info[3].As<Napi::Number>();
+    int hour = info[4].As<Napi::Number>();
+    int minute = info[5].As<Napi::Number>();
+    int second = info[6].As<Napi::Number>();
+
     try
     {
         Card newCard = cardDAO.getCardById(id);
-        newCard.getLastReview().updateDate(dia, mes, 0, hora, min, 0);
+        Date nova(day, month, year, hour, minute, second);
+        newCard.setLastReview(nova);
         bool card = cardDAO.updateCard(newCard);
         return Napi::Boolean::New(env, card);
     }
@@ -306,6 +371,8 @@ Napi::Value UpdateCard(const Napi::CallbackInfo &info)
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports.Set("getDeckAll", Napi::Function::New(env, GetDeckAll));
+    exports.Set("getContReviews", Napi::Function::New(env, GetContReviews));
+    exports.Set("getCardReviews", Napi::Function::New(env, GetCardReviews));
     exports.Set("getDeckById", Napi::Function::New(env, GetDeckById));
     exports.Set("deleteDeck", Napi::Function::New(env, DeleteDeck));
     exports.Set("createUpdateDeck", Napi::Function::New(env, CreateUpdateDeck));

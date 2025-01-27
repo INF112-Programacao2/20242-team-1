@@ -91,7 +91,7 @@ const CardEdit = () => {
 
     return (
         <Container>
-            <h2> 'Edição'</h2>
+            <h2>Edição</h2>
             <Formik
                 initialValues={{
                     front: data?.front || '',

@@ -1,4 +1,3 @@
-
 #include "carddao.h"
 
 CardDAO::CardDAO(DatabaseConnection& database) : db(database) {} 
@@ -39,15 +38,18 @@ bool CardDAO::cardExists(int id) {
     return exists;
 }
 
-int CardDAO::countCards() {
+int CardDAO::countCards(int deck_id) {
+    Date date;
     int count = 0;
-    std::string sql = "SELECT COUNT(*) FROM cards;";
+    std::string sql = "SELECT COUNT(*) FROM cards WHERE lastReview < ? AND deck_id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
             throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
         }
+        sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 2, deck_id);
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             count = sqlite3_column_int(stmt, 0);
@@ -172,52 +174,65 @@ Card CardDAO::getCardById(int id) {
     }
     return card;
 }
-Card CardDAO::getCardByDate(Date date){
-    Card card;
-    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE lastReview = ?;";
+
+std::vector<Card> CardDAO::getCardsByDate(int deck_id) {
+    Date date;
+    std::vector<Card> cards;
+    std::string sql = "SELECT id, front, back, deck_id, lastReview FROM cards WHERE lastReview < ? AND deck_id=?;";
     sqlite3_stmt* stmt = nullptr;
 
     try {
+        // Prepara a consulta SQL
         if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
             throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
         }
+        sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 2, deck_id);
 
-        if (sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
-            throw std::runtime_error("Erro ao vincular data na consulta SQL.");
-        }
+        // Itera sobre os resultados
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            Card card;
 
-        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            // Coluna 0: id
             card.setId(sqlite3_column_int(stmt, 0));
 
+            // Coluna 1: front
             const char* frontText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
             card.setFront(frontText ? frontText : "");
 
+            // Coluna 2: back
             const char* backText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
             card.setBack(backText ? backText : "");
 
+            // Coluna 3: deck_id
             card.setDeckId(sqlite3_column_int(stmt, 3));
 
+            // Coluna 4: lastReview
             const char* lastReviewText = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
             if (lastReviewText) {
-                Date a;
-                a.setDateBystring(lastReviewText);
-                card.setLastReview(a);
+                Date lastReviewDate;
+                lastReviewDate.setDateBystring(lastReviewText);
+                card.setLastReview(lastReviewDate);
             }
-        } else {
-             throw std::invalid_argument("Nenhum card encontrado com a data fornecida.");
+
+            // Adiciona o card ao vetor
+            cards.push_back(card);
         }
     } catch (const std::exception& e) {
         if (stmt) {
-        sqlite3_finalize(stmt);
+            sqlite3_finalize(stmt);
         }
-         throw std::runtime_error("Erro em getCardByDate: " + std::string(e.what()));
+        throw std::runtime_error("Erro em getCardsByDate: " + std::string(e.what()));
     }
 
+    // Finaliza o statement
     if (stmt) {
         sqlite3_finalize(stmt);
     }
-    return card;
+
+    return cards;
 }
+
 Date CardDAO::getDateByCardId(int card_id){
     Date date;  // Objeto vazio para retorno padrão caso não encontre nada
     std::string sql = "SELECT lastReview FROM cards WHERE id = ?;";
@@ -349,6 +364,7 @@ std::vector<Card> CardDAO::getCardsByDeckId(int deck_id){
     if (stmt) {
         sqlite3_finalize(stmt);
     }
+    SortDate(cards);
     return cards;
 }
 std::vector<Card> CardDAO::getCardsByDeckIdSortedByDate(int deck_id){

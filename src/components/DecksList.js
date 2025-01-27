@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
-import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
 import { ReactComponent as EditIcon } from '../assets/icons/edit.svg';
 import DeleteButton from './DeleteButton';
 //Exemplo de dados que vamos receber do backend

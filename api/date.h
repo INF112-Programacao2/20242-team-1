@@ -23,6 +23,7 @@ class Date{
         ~Date() = default;
 
         // Getters
+        Date& operator=(const Date& date) = default;
         int getDay() const;
         int getMonth() const;
         int getYear() const;

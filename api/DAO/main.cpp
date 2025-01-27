@@ -4,7 +4,7 @@
 // Para o linux: (necessário estar na pasta api)
 // g++ deck.cpp ./DAO/deckdao.cpp ./DAO/DatabaseConnection.cpp ./DAO/main.cpp -o out -lsqlite3
 #include "carddao.h"
-#include "cardimageDAO.h"
+#include "cardImageDAO.h"
 #include "cardAudioDAO.h"
 #include "DatabaseConnection.h"
 #include "deckdao.h"
@@ -44,7 +44,7 @@ int main (){
         //cad.setAudio(au);
         //CardAudioDAO.createCardAudio(cad);
 
-        CardAudioDAO.deleteCardAudio(1);
+       // CardAudioDAO.deleteCardAudio(1);
 
     }catch (const std::exception& e){
         std::cerr << "Excecao capturada: " << e.what() << std::endl;

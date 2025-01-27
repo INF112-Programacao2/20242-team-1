@@ -6,51 +6,109 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { ReactComponent as SmileIcon } from '../assets/icons/smile.svg';
-let cards = [{ id: 1, front: "Frente 1", back: "Verso 1", pad_id: 1, level_time_id: 1, last_review: new Date() },
-{ id: 2, front: "Frente 2", back: "Verso 2", pad_id: 2, level_time_id: 2, last_review: new Date() },
-{ id: 3, front: "Frente 3", back: "Verso 3", pad_id: 3, level_time_id: 3, last_review: new Date() }
-]
+
 const CardsReview = () => {
-    const [card, setCard] = useState({ id: null, front: "", back: "", pad_id: 1, level_time_id: 1, last_review: new Date() })
-    const [finish, setFinish] = useState(false)
+    const [cards, setCards] = useState([{ id: null, front: "", back: "", pad_id: 1, level_time_id: 1, lastReview: new Date() }])
+    const [n, setN] = useState(0);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [finish, setFinish] = useState(true);
     const [visibleBack, setVsibleBackFinish] = useState(false)
     const { id } = useParams();
 
-    const levelCollection = {
-        id: 1,
-        name: "Level Fácil"
-    }
-    const levelTime = [{
-        id: 1,
-        time: new Date(),
-        ob: "Obs",
-        title: "Fácil"
-    },
-    {
-        id: 2,
-        time: new Date(),
-        ob: "Obs",
-        title: "Médio"
-    },
-    {
-        id: 3,
-        time: new Date(),
-        ob: "Obs",
-        title: "Difícil"
-    }]
+    const levelTime = [
+        {
+            id: 1,
+            time: (60 * 1000), // 1 minuto
+            title: "De novo"
+        }, {
+            id: 2,
+            time: (10 * 60 * 1000), // 10 minutos
+            title: "Difícil"
+        },
+        {
+            id: 3,
+            time: (24 * 60 * 60 * 1000), // 1 dia
+            title: "Bom"
+        },
+        {
+            id: 4,
+            time: (7 * 24 * 60 * 60 * 1000), // 1 semana
+            title: "Fácil"
+        }]
 
 
-    const nextCard = (cards) => {
-        if (cards.length == 0) {
+    const nextCard = () => {
+        const valor = n + 1;
+        if (cards.length == valor) {
             setFinish(true);
         } else {
-            setCard(cards.shift());
+            setN(valor);
             setVsibleBackFinish(false);
         }
     };
 
-    if (card.id == null) {
-        setCard(cards.shift());
+    const updateLastRevision = async (i) => {
+        const futureDate = new Date();
+        futureDate.setTime(futureDate.getTime() + levelTime[i].time);
+
+        const day = futureDate.getDate();
+        const month = futureDate.getUTCMonth()+1;
+        const year = futureDate.getFullYear();
+        const hour = futureDate.getHours();
+        const minute = futureDate.getMinutes();
+        const second = futureDate.getSeconds();
+        const formData = new FormData();
+        formData.append('day', day);
+        formData.append('month', month);
+        formData.append('year', year);
+        formData.append('hour', hour);
+        formData.append('minute', minute);
+        formData.append('second', second);
+        setVsibleBackFinish(true)
+        try {
+            const response = await fetch(`http://localhost:3000/api/card/lastreview/${cards[n].id}`, {
+                method: 'PUT',
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error('Failed to upload image');
+            } else {
+
+            }
+
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/card/reviews/${id}`, {
+                    headers: {
+                        'Cache-Control': 'no-store',
+                    }
+                });
+                const data = await response.json();
+                setCards(data)
+            } catch (error) {
+                console.error('Erro ao buscar os dados:', error);
+            } finally {
+                setLoading(false);
+                setFinish(false);
+            }
+        };
+
+        fetchData(); // Chama a função dentro do useEffect
+    }, []);
+    if (loading) {
+        return (
+            <Container fluid="xl">
+                <h2>Carregando...</h2>
+            </Container>
+        );
     }
 
     return (
@@ -66,18 +124,18 @@ const CardsReview = () => {
                     <Card.Body>
                         <Card.Title>
                             <h4>
-                                {card.front ?? ""}
+                                {cards[n].front ?? ""}
                             </h4>
                         </Card.Title>
-                        {visibleBack && <Card.Text>{card.back ?? ""}
+                        {visibleBack && <Card.Text>{cards[n].back ?? ""}
                         </Card.Text>}
                     </Card.Body>
                 </Card>
                     {visibleBack ? <ButtonGroup aria-label="Basic button group" className='bottom'>
-                        <Button variant="secondary" onClick={() => nextCard(cards)}> Next</Button>
+                        <Button variant="secondary" onClick={() => nextCard()}> Next</Button>
                     </ButtonGroup> : <ButtonGroup variant="contained" aria-label="Basic button group">
-                        {levelTime.map((level) => {
-                            return <Button className='bottom' variant="secondary" key={level.id} onClick={() => setVsibleBackFinish(true)}>{level.title}</Button>
+                        {levelTime.map((level, idx) => {
+                            return <Button className='bottom' variant="secondary" key={level.id} onClick={() => updateLastRevision(idx)}>{level.title}</Button>
                         })}
                     </ButtonGroup>}
                 </>
