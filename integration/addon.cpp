@@ -95,7 +95,6 @@ Napi::Value GetDeckById(const Napi::CallbackInfo &info)
             Napi::Object cardObject = CardAudioToJSObject(env, audios[i]);
             audiosArray[i] = cardObject; // Adiciona o objeto no array
         }
-        std::cout<<images.size();
         for (size_t i = 0; i < images.size(); ++i)
         {
             Napi::Object cardObject = CardImageToJSObject(env, images[i]);
@@ -457,7 +456,6 @@ Napi::Value CreateImage(const Napi::CallbackInfo &info)
         newCArdImage.setDeckId(deckId);
         newCArdImage.setFront(front);
         int card = cardImageDAO.createCardImage(newCArdImage);
-        std::cout<<card;
         return Napi::Number::New(env, card);
     }
     catch (const std::exception &e)

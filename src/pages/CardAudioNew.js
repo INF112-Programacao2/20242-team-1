@@ -7,11 +7,14 @@ import Button from 'react-bootstrap/Button';
 import AudioInputPlayer from '../components/AudioInputPlayer';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
+
 
 const CardAudioNew = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
-    
+    const navigate = useNavigate();
+
     if (loading) {
         return (
             <Container>
@@ -51,7 +54,7 @@ const CardAudioNew = () => {
                         if (!response.ok) {
                             throw new Error('Falha ao salvar o cartão de áudio');
                         }
-                        window.location.reload();
+                        navigate(`/edit/deck/${id}`);
                     } catch (error) {
                         console.error('Erro ao salvar o cartão:', error);
                     }

@@ -6,8 +6,10 @@ import Form from 'react-bootstrap/Form';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CardsList from '../components/CardsList';
+import { useNavigate } from "react-router-dom";
 
 const DeckEdit = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null); // Para armazenar os dados da API
@@ -36,6 +38,9 @@ const DeckEdit = () => {
             });
 
             const result = await response.json();
+            if(id == undefined){
+                navigate('/deck');
+            }
         } catch (error) {
             console.error('Erro ao salvar os dados:', error);
             alert("Erro ao salvar o baralho.");

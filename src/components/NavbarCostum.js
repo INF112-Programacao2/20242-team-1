@@ -10,9 +10,8 @@ function NavbarCostum() {
     return (
         <Navbar bg="light" data-bs-theme="light" style={{width:'100vw'}}>
             <Container >
-                <Navbar.Brand href="/">Home</Navbar.Brand>
-                <Nav.Link href="/deck">Baralhos <CardIcon/></Nav.Link>
-                <Nav.Link href="/settings">Configurações <GearIcon/></Nav.Link>
+                <Navbar.Brand href="/">Memoir <CardIcon/></Navbar.Brand>
+                <Nav.Link href="/deck">Baralhos  <GearIcon/> </Nav.Link>
             </Container>
         </Navbar>
     );

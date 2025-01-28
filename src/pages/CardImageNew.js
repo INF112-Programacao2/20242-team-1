@@ -6,8 +6,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
 
 const CardImageNew = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
 
@@ -54,6 +56,7 @@ const CardImageNew = () => {
                         if (!response.ok) {
                             throw new Error('Falha ao salvar o cartão de imagem');
                         }
+                        navigate(`/edit/deck/${id}`);
                     } catch (error) {
                         console.error('Erro ao salvar o cartão:', error);
                     }

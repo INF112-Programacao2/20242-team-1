@@ -191,7 +191,7 @@ app.put('/api/card/:id', (req, res) => {
   const id = Number(req.params.id);
   const { front, back } = req.body
   try {
-    const data = addon.createCard(id, front, back);
+    const data = addon.createCard( front, back,id);
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
@@ -326,11 +326,10 @@ app.post('/api/upload', (req, res) => {
   const { file } = req.files;
   const diretorio = './dist/dist/assets/uploads/';
   // Se nenhum arquivo foi enviado
-  /*if (!file) return res.sendStatus(400);
+  if (!file) return res.sendStatus(400);
   if (!fs.existsSync(diretorio)) {
     fs.mkdirSync(diretorio);
-  }*/
-  console.log(__dirname)
+  }
   // Move a imagem para o diretório de uploads
   file.mv(path.join(__dirname, diretorio, file.name), (err) => {
     if (err) {

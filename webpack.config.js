@@ -1,7 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // Adicionado aqui
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const mkdirp = require('mkdirp'); // Importa mkdirp
+
+// Cria a pasta ./dist/assets/uploads antes de rodar o Webpack
+mkdirp.sync(path.resolve(__dirname, 'dist/dist/assets/uploads'));
 
 module.exports = {
   entry: './src/index.js',
@@ -31,48 +35,43 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.scss$/, // Aplica a regra a arquivos .scss
+        test: /\.scss$/,
         use: [
-          { loader: 'style-loader' }, // Insere o CSS no DOM
-          { loader: 'css-loader' },   // Processa os arquivos CSS
-          { loader: 'sass-loader',
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
             options: {
               implementation: require('sass'),
               sassOptions: {
                 includePaths: [path.resolve(__dirname, 'src')],
               },
             },
-
-           },  // Converte SCSS para CSS
+          },
         ],
       },
       {
-        test: /\.css$/, // Para arquivos CSS
-        use: [
-          'style-loader', // Insere o CSS no DOM
-          'css-loader',   // Processa o CSS
-        ],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'dist', 'index.html'), // Caminho correto para o arquivo HTML
+      template: path.resolve(__dirname, 'dist', 'index.html'),
       inject: false,
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/style', to: '' }, // Exemplo: copia a pasta `assets` para `dist/assets`
-        { from: './src/assets/uploads', to: './dist/assets/uploads' }, // Exemplo: copia a pasta `assets` para `dist/assets`
+        { from: './src/style', to: '' },
       ],
     }),
     // new BundleAnalyzerPlugin(),
-
   ],
   devServer: {
     static: path.resolve(__dirname, 'dist'),
     port: 3000,
-    hot: true,        // Habilitar Hot Module Replacement (HMR)
+    hot: true,
     open: true,
   },
   resolve: {
@@ -82,8 +81,7 @@ module.exports = {
     },
   },
   optimization: {
-    usedExports: true, // Remove código não utilizado
-    minimize: true     // Minifica o bundle
-  }
-
+    usedExports: true,
+    minimize: true,
+  },
 };
