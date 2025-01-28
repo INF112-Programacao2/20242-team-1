@@ -431,11 +431,6 @@ std::vector<CardAudio> CardAudioDAO::getCardsAudioByDate(const Date date,int dec
         sqlite3_bind_text(stmt, 1, date.getDateBystring().c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 2, deck_id);
 
-        if (sqlite3_step(stmt) != SQLITE_ROW) {
-            throw std::runtime_error("Erro ao vincular data na consulta SQL.");
-
-        }
-
         // Itera sobre os resultados
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             CardAudio card;

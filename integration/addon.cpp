@@ -190,12 +190,12 @@ Napi::Value GetCardReviews(const Napi::CallbackInfo &info)
         for (size_t i = 0; i < images.size(); ++i)
         {
             Napi::Object cardObject = CardImageToJSObject(env, images[i]);
-            cardsArray[i] = cardObject; // Adiciona o objeto no array
+            cardsArray[cardsArray.Length()+ i] = cardObject; // Adiciona o objeto no array
         }
         for (size_t i = 0; i < audios.size(); ++i)
         {
             Napi::Object cardObject = CardAudioToJSObject(env, audios[i]);
-            cardsArray[i] = cardObject; // Adiciona o objeto no array
+            cardsArray[cardsArray.Length()+ i] = cardObject; // Adiciona o objeto no array
         }
         return cardsArray;
     }
