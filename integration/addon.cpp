@@ -149,7 +149,7 @@ Napi::Value GetContReviews(const Napi::CallbackInfo &info)
         {
             Napi::Object deckObject = DeckToJSObject(env, decks[i]);
             decksArray[i] = deckObject; // Adiciona o objeto no array
-            int quantity = cardDAO.countCards(decks[i].getId()) + cardImageDAO.countCardsImageByDeck(decks[i].getId());//+ cardAudioDAO.countCardsAudioByDeck(decks[i].getId()) + ;
+            int quantity = cardDAO.countCards(decks[i].getId()) + cardImageDAO.countCardsImageByDeck(decks[i].getId())+ cardAudioDAO.countCardsAudioByDeck(decks[i].getId()) ;
             deckObject.Set("reviews", Napi::Number::New(env, quantity));
         }
         return decksArray;

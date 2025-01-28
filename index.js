@@ -201,7 +201,7 @@ app.put('/api/card/:id', (req, res) => {
 
 app.post('/api/image', (req, res) => {
   const { image } = req.files;
-  const diretorio = './src/assets/uploads';
+  const diretorio = './dist/dist/assets/uploads/';
   const { front, deckId } = req.body
   const id = addon.createImage(front, "", "image", Number(deckId));
 
@@ -226,7 +226,7 @@ app.post('/api/image', (req, res) => {
 
 app.put('/api/image/:id', (req, res) => {
   const id = Number(req.params.id);
-  const diretorio = './src/assets/uploads';
+  const diretorio = './dist/dist/assets/uploads/';
   const { front, deckId } = req.body
 
   try {
@@ -261,11 +261,12 @@ app.put('/api/image/:id', (req, res) => {
 
 app.post('/api/audio', (req, res) => {
   const { audio } = req.files;
-  const diretorio = './src/assets/uploads';
+  const diretorio = './dist/dist/assets/uploads/';
   const { front, deckId } = req.body
   const id = addon.createAudio(front, "", "sound", Number(deckId));
 
   try {
+    
     if (!audio) return res.sendStatus(400);
     if (!fs.existsSync(diretorio)) {
       fs.mkdirSync(diretorio);
@@ -287,7 +288,7 @@ app.post('/api/audio', (req, res) => {
 
 app.put('/api/audio/:id', (req, res) => {
   const id = Number(req.params.id);
-  const diretorio = './src/assets/uploads';
+  const diretorio = './dist/dist/assets/uploads/';
   const { front, deckId } = req.body
 
   try {
@@ -323,12 +324,13 @@ app.put('/api/audio/:id', (req, res) => {
 // Rota para upload de arquivos
 app.post('/api/upload', (req, res) => {
   const { file } = req.files;
-  const diretorio = './src/assets/uploads';
+  const diretorio = './dist/dist/assets/uploads/';
   // Se nenhum arquivo foi enviado
-  if (!file) return res.sendStatus(400);
+  /*if (!file) return res.sendStatus(400);
   if (!fs.existsSync(diretorio)) {
     fs.mkdirSync(diretorio);
-  }
+  }*/
+  console.log(__dirname)
   // Move a imagem para o diretório de uploads
   file.mv(path.join(__dirname, diretorio, file.name), (err) => {
     if (err) {
