@@ -191,7 +191,7 @@ app.put('/api/card/:id', (req, res) => {
   const id = Number(req.params.id);
   const { front, back } = req.body
   try {
-    const data = addon.createCard( front, back,id);
+    const data = addon.updateCard(id ,front, back);
     res.json(data);
   } catch (error) {
     console.error('Erro ao criar conexão:', error.message);
