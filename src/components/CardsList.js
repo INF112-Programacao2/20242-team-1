@@ -20,11 +20,11 @@ const CardsList = (props) => {
                 {props.cards.map((card, idx) => (
                     <tr key={idx}>
                         <td>{card.front}</td>
-                        <td><Button size='lg' variant='light' onClick={() => navigate(`/card/edit/${card.id}`)}><EditIcon /></Button></td>
-                        <td><DeleteButton  url={`card/${card.id}`}/></td>
+                        <td><Button size='lg' variant='light' onClick={() => navigate(`/${props.type}/edit/${card.id}`)}><EditIcon /></Button></td>
+                        <td><DeleteButton  url={`${props.type}/${card.id}`}/></td>
                     </tr>
                 ))}
-                <tr><td colSpan={3}><Button size='sm' variant='secondary' onClick={() => navigate(`/card/new/${props.id}`)}> + Novo</Button></td></tr>
+                <tr><td colSpan={3}><Button size='sm' variant='secondary' onClick={() => navigate(`/${props.type}/new/${props.id}`)}> + Novo</Button></td></tr>
             </tbody>
         </Table>
     );

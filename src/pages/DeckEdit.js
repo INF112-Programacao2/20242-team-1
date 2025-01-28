@@ -122,9 +122,24 @@ const DeckEdit = () => {
                         </Form.Group>
 
                         {id !== undefined && (
+                            <>
+                            <h4>Cartões de Texto</h4>
+                            <br></br>
                             <Form.Group className="mb-3">
-                                <CardsList id={id} cards={data.cards?? []} />
+                                <CardsList id={id} cards={data.cards?? []}  type={"card"}/>
                             </Form.Group>
+                            <h4>Cartões de Imagem</h4>
+                            <br></br>
+                            <Form.Group className="mb-3">
+                                <CardsList id={id} cards={data.images?? []}  type={"image"}/>
+                            </Form.Group>
+                            <h4>Cartões de Audio</h4>
+                            <br></br>
+                            <Form.Group className="mb-3">
+                                <CardsList id={id} cards={data.audios?? []}  type={"audio"}/>
+                            </Form.Group>
+                            </>
+                            
                         )}
 
                         <Button variant="secondary" type="submit" size="lg" disabled={isSubmitting}>

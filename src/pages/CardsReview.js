@@ -53,12 +53,14 @@ const CardsReview = () => {
         futureDate.setTime(futureDate.getTime() + levelTime[i].time);
 
         const day = futureDate.getDate();
-        const month = futureDate.getUTCMonth()+1;
+        const month = futureDate.getUTCMonth() + 1;
         const year = futureDate.getFullYear();
         const hour = futureDate.getHours();
         const minute = futureDate.getMinutes();
         const second = futureDate.getSeconds();
         const formData = new FormData();
+        const type = cards[n].back !== undefined ? '0' : cards[n].audio !== undefined ? '1' : '2';
+        formData.append('type', type);
         formData.append('day', day);
         formData.append('month', month);
         formData.append('year', year);
@@ -126,9 +128,21 @@ const CardsReview = () => {
                             <h4>
                                 {cards[n].front ?? ""}
                             </h4>
+
                         </Card.Title>
-                        {visibleBack && <Card.Text>{cards[n].back ?? ""}
-                        </Card.Text>}
+                        {visibleBack && (
+                            cards[n]?.back !== undefined ? (
+                                <Card.Text>{cards[n]?.back}</Card.Text>
+                            ) : cards[n]?.audio !== undefined ? (
+                                <audio controls>
+                                    <source src={`http://localhost:3000/dist/assets/uploads/${cards[n].id}sound.webm`} type="audio/webm" />
+                                    Seu navegador não suporta o elemento de áudio.
+                                </audio>
+                            ) : (
+                                <Card.Img variant="top" src={`http://localhost:3000/dist/assets/uploads/${cards[n].id}image.png`} />
+                            )
+                        )}
+
                     </Card.Body>
                 </Card>
                     {visibleBack ? <ButtonGroup aria-label="Basic button group" className='bottom'>

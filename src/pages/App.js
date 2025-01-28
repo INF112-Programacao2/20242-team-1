@@ -10,6 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/main.scss'
 import CardEdit from "./CardEdit";
 import CardNew from "./CardNew";
+import CardAudioNew from "./CardAudioNew";
+import CardImageNew from "./CardImageNew";
+import CarAudiodEdit from "./CardAudioEdit";
 
 function App() {
     return (
@@ -23,6 +26,9 @@ function App() {
                 <Route path="/edit/deck/:id?" element={<DeckEdit />} />
                 <Route path="/card/edit/:id" element={<CardEdit/>} />
                 <Route path="/card/new/:id" element={<CardNew/>} />
+                <Route path="/audio/new/:id" element={<CardAudioNew/>} />
+                <Route path="/audio/edit/:id" element={<CarAudiodEdit/>} />
+                <Route path="/image/new/:id" element={<CardImageNew/>} />
             </Routes>
         </BrowserRouter>
     );

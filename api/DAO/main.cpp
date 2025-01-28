@@ -27,16 +27,21 @@ int main (){
         CardAudioDAO CardAudioDAO(db);
         CardImageDAO CardImageDAO(db);
         
-        Image img(10,10,"nome","legenda","path");
-        CardImage cardd("front","back",1);
-        cardd.setImage(img);
-        CardImageDAO.createCardImage(cardd);
+        //Image img(10,10,"nome","legenda","path");
+        //CardImage cardd("front","back",1);
+        //cardd.setImage(img);
+        //CardImageDAO.createCardImage(cardd);
+        AudioDAO ad(db);
+        //ad.deleteAudio(2);
         //Audio au("Casa2","legenda2",10,"caminho2");
         //CardAudio cad("front2","back2",1);
         //cad.setAudio(au);
-        //CardAudioDAO.createCardAudio(cad);
+        CardAudioDAO.getAllCardsAudio();
+        Date data;
+        CardAudioDAO.getAllCardsAudioSortedByDate();
+        CardAudioDAO.getCardsAudioByDate(data,1);
 
-       // CardAudioDAO.deleteCardAudio(1);
+        //CardAudioDAO.deleteCardAudio(2);
 
 
     }catch (const std::exception& e){

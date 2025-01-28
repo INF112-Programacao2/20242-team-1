@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactMic } from 'react-mic';
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as MicIcon } from '../assets/icons/mic-fill.svg';
 import { ReactComponent as PauseIcon } from '../assets/icons/pause-fill.svg';
 import { ReactComponent as TrashIcon } from '../assets/icons/trash-fill.svg';
 
-const AudioInputPlayer = ({ setAudio }) => {
+
+const AudioInputPlayer = ({ setAudio, responseAudio }) => {
     const [recording, setRecording] = useState(false);
     const [audioBlob, setAudioBlob] = useState(null);
     const [audioURL, setAudioURL] = useState(null);
 
+    // Atualiza o áudio quando `responseAudio` mudar
+    useEffect(() => {
+        if (responseAudio) {
+            setAudioURL(responseAudio);
+            setAudioBlob(responseAudio);
+        }
+    }, [responseAudio]);
+
     const startRecording = () => {
-        setRecording(!recording)
-    }
+        setRecording(!recording);
+    };
+
     const deleteRecording = () => {
         setAudioBlob(null);
         setAudioURL(null);
@@ -21,7 +31,6 @@ const AudioInputPlayer = ({ setAudio }) => {
     };
 
     const onStop = (recordedBlob) => {
-        setAudioBlob(recordedBlob.blob);
         const url = URL.createObjectURL(recordedBlob.blob);
         setAudioURL(url);
         setAudio(recordedBlob.blob);
@@ -29,22 +38,22 @@ const AudioInputPlayer = ({ setAudio }) => {
 
     return (
         <div className='player'>
-            {!audioURL &&
+            {!audioURL && (
                 <Button variant="light" onClick={startRecording}>
                     {recording ? <PauseIcon /> : <MicIcon />}
                 </Button>
-            }
-            {audioURL && !recording ?
+            )}
+            {audioURL && !recording ? (
                 <>
                     <audio controls>
-                        <source src={audioURL} type="audio/webm" />
+                        <source src={responseAudio ??audioURL} type="audio/webm" />
                         Seu navegador não suporta o elemento de áudio.
                     </audio>
                     <Button variant="light" onClick={deleteRecording}>
                         <TrashIcon />
                     </Button>
                 </>
-                :
+            ) : (
                 <ReactMic
                     record={recording}
                     className="sound-wave audio"
@@ -53,9 +62,7 @@ const AudioInputPlayer = ({ setAudio }) => {
                     backgroundColor="#f1f3f4"
                     mimeType="audio/webm"
                 />
-            }
-
-
+            )}
         </div>
     );
 };

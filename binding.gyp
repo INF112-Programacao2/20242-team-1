@@ -9,7 +9,16 @@
         "./api/DAO/deckdao.cpp",
         "./api/date.cpp",
         "./api/card.cpp",
-        "./api/DAO/carddao.cpp"
+        "./api/DAO/carddao.cpp",
+        "./api/cardAudio.cpp",
+        "./api/cardImage.cpp",
+        "./api/DAO/imageDAO.cpp",
+        "./api/DAO/audioDAO.cpp",
+        "./api/DAO/cardAudioDAO.cpp",
+        "./api/DAO/cardImageDAO.cpp",
+        "./api/media.cpp",
+        "./api/audio.cpp",
+        "./api/image.cpp"
       ],
       "include_dirs": [
         "<!(node -p \"require('node-addon-api').include_dir\")",

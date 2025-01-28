@@ -5,6 +5,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin'); // Adicionado aqui
 
 module.exports = {
   entry: './src/index.js',
+  watch: true, // Habilita a observação de alterações nos arquivos
+  watchOptions: {
+    ignored: /node_modules/, // Ignora alterações nos node_modules
+    aggregateTimeout: 300,  // Aguarda 300ms após uma alteração antes de reconstruir
+    poll: 1000,             // Verifica alterações a cada 1000ms
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -63,6 +69,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/style', to: '' }, // Exemplo: copia a pasta `assets` para `dist/assets`
+        { from: './src/assets/uploads', to: './dist/assets/uploads' }, // Exemplo: copia a pasta `assets` para `dist/assets`
       ],
     }),
     // new BundleAnalyzerPlugin(),

@@ -32,7 +32,7 @@ public:
     Date getDateByCardImageId(int card_id);//OLHA O ID DA CARTA E RETORNA O lastReview;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error; SE NAO EXISTIR O ID IRA LANCAR std::invalid_argument
     Image getImageByCardImageId(int card_id);
     CardImage getCardImageByImage(Image Image);
-    std::vector<CardImage> getCardsByDate(const Date date,int deck_id);
+    std::vector<CardImage> getCardsByDate(int deck_id);
 
     std::vector<CardImage> getAllCardsImage(); //RETORNA UM VECTOR COM TODAS AS CARTAS NOS DADOS;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     std::vector<CardImage> getAllCardsImageSortedByDate();
@@ -40,7 +40,7 @@ public:
     std::vector<CardImage> getCardsImageByDeckIdSortedByDate(int deck_id);// OLHA O ID FORNECIDO E RETORNA UM VECTOR COM TODAS AS CARTAS DESSE DECK ORDENADAS PELA DATA;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     
 
-    bool createCardImage(CardImage& card);//USA A CARTA FORNECIDA PARA CRIAR UMA NOVA, O NOVO ID SERA COLOCADO NA CARTA FORNECIDA E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
+    int createCardImage(CardImage& card);//USA A CARTA FORNECIDA PARA CRIAR UMA NOVA, O NOVO ID SERA COLOCADO NA CARTA FORNECIDA E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     bool updateCardImage(CardImage& card);//USA A CARTA FORNECIDA PARA EDITAR UMA EXISTENTE, O ID DA CARTA FORNECIDA SERA O USADO PARA EDITAR A CARTA EQUIVALENTE E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     bool deleteCardImage(int id);//USA O ID FORNECIDO PARA DELETAR UMA EXISTENTE E RETORNA SE A OPERAÇÂO OCORREU;SE OCORRER UM ERRO IRA LANCAR UM std::runtime_error
     
