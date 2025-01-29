@@ -1,86 +1,62 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
 
-const CardEdit = () => {
+const CardImageNew = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
-
-    // Schema de validação
-    const validationSchema = Yup.object({
-        front: Yup.string()
-            .required('A frente é obrigatória.')
-            .min(3, 'O título deve ter pelo menos 3 caracteres.'),
-        back: Yup.string()
-            .required('O assunto é obrigatório.')
-            .min(3, 'O assunto deve ter pelo menos 3 caracteres.'),
-    });
-
-    useEffect(() => {
-        async function fetchData() {
-            if (id) {
-                try {
-                    const response = await fetch(`http://localhost:3000/api/card/${id}`);
-                    const result = await response.json();
-                    setData(result);
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                } finally {
-                    setLoading(false);
-                }
-            } else {
-                setLoading(false);
-            }
-        }
-
-        fetchData();
-    }, [id]);
+    const [loading, setLoading] = useState(false);
 
     if (loading) {
         return (
             <Container>
-                <h2>Carregando...</h2>
+                <h2>Loading...</h2>
             </Container>
         );
     }
 
-    if (!data && id) {
-        return (
-            <Container>
-                <h2>Nenhum dado encontrado</h2>
-            </Container>
-        );
-    }
+    const validationSchema = Yup.object({
+        front: Yup.string()
+            .required('A frente é obrigatória.')
+            .min(3, 'O título deve ter pelo menos 3 caracteres.'),
+        file: Yup.mixed()
+            .required('Uma imagem é obrigatória.')
+            .test('fileFormat', 'Formato não suportado.', (value) =>
+                value ? ['image/jpeg', 'image/png', 'image/gif'].includes(value.type) : false
+            ),
+    });
 
     return (
         <Container>
-            <h2>Editar Cartão</h2>
+            <h2>Novo Cartão de Imagem</h2>
             <Formik
                 initialValues={{
-                    front: data?.front || '',
-                    back: data?.back || '',
+                    front: '',
+                    file: null,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting }) => {
                     const formData = new FormData();
                     formData.append('front', values.front);
-                    formData.append('back', values.back);
+                    formData.append('deckId', id);
+                    formData.append('image', values.file);
 
                     try {
-                        const response = await fetch(`http://localhost:3000/api/card/${id}`, {
-                            method: 'PUT',
+                        const response = await fetch(`http://localhost:3000/api/image`, {
+                            method: 'POST',
                             body: formData,
                         });
 
                         if (!response.ok) {
-                            throw new Error('Falha ao salvar o cartão');
+                            throw new Error('Falha ao salvar o cartão de imagem');
                         }
+                        navigate(`/edit/deck/${id}`);
                     } catch (error) {
                         console.error('Erro ao salvar o cartão:', error);
                     }
@@ -94,11 +70,12 @@ const CardEdit = () => {
                     touched,
                     handleChange,
                     handleBlur,
+                    setFieldValue,
                     handleSubmit,
                     isSubmitting,
                 }) => (
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="formBasicFront">
+                        <Form.Group className="mb-3" controlId="formBasicTitle">
                             <Form.Label>Frente</Form.Label>
                             <Form.Control
                                 type="text"
@@ -114,19 +91,17 @@ const CardEdit = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicBack">
-                            <Form.Label>Verso</Form.Label>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Selecione uma imagem</Form.Label>
                             <Form.Control
-                                type="text"
-                                name="back"
-                                placeholder="Adicione o verso do cartão"
-                                value={values.back}
-                                onChange={handleChange}
+                                type="file"
+                                name="file"
+                                onChange={(e) => setFieldValue('file', e.target.files[0])}
                                 onBlur={handleBlur}
-                                isInvalid={touched.back && !!errors.back}
+                                isInvalid={touched.file && !!errors.file}
                             />
                             <Form.Control.Feedback type="invalid">
-                                {errors.back}
+                                {errors.file}
                             </Form.Control.Feedback>
                         </Form.Group>
 
@@ -140,4 +115,4 @@ const CardEdit = () => {
     );
 };
 
-export default CardEdit;
+export default CardImageNew;

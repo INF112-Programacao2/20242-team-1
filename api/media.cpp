@@ -18,8 +18,8 @@ Media::Media() {
 * @param name Nome da mídia
 * @param path Caminho da mídia
 */
-Media::Media(int id, std::string name, std::string path) {
-    this->id = id;
+Media::Media(std::string name, std::string path) {
+    this->id = -1;
     this->name = name;
     this->path = path;
 
@@ -41,6 +41,7 @@ Media::Media(int id, std::string name, std::string path) {
 }
 
 // Implementação dos Getters
+
 int Media::getId() const { return id; }
 std::string Media::getName() const { return name; }
 std::string Media::getPath() const { return path; }
@@ -48,6 +49,7 @@ size_t Media::getFileSize() const { return file_size; }
 std::string Media::getType() const { return type; }
 
 // Implementação dos Setters
+
 void Media::setId(int newId) { id = newId; }
 void Media::setName(const std::string& newName) { name = newName; }
 void Media::setPath(const std::string& newPath) { 
@@ -56,16 +58,16 @@ void Media::setPath(const std::string& newPath) {
     // Atualizar tipo e tamanho quando o caminho muda
     size_t dotPos = path.find_last_of(".");
     if (dotPos != std::string::npos) {
-        type = path.substr(dotPos + 1);
+        setType(path.substr(dotPos + 1));
     }
 
     FILE* file = fopen(path.c_str(), "rb");
     if (file) {
         fseek(file, 0, SEEK_END);
-        file_size = ftell(file);
+        setFileSize(ftell(file));
         fclose(file);
     } else {
-        file_size = 0;
+        setFileSize(0);
     }
 }
 void Media::setFileSize(size_t newFileSize) { file_size = newFileSize; }

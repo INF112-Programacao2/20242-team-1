@@ -61,7 +61,7 @@ int DeckDAO::getDeckID(Deck& deck){
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             deck_id = sqlite3_column_int(stmt, 0);
         } else {
-            throw std::runtime_error("Erro ao preparar consulta: NAO FOI POSSIVEL ENCONTRAR CARD COM ESSE NOME E ASSUNTO");
+            throw std::runtime_error("Erro ao preparar consulta: Nao foi possivel encontrar Deck com esse nome e assunto");
         }
     } else {
         throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
@@ -98,14 +98,35 @@ Deck DeckDAO::getDeckById(int id){
 
 
 bool DeckDAO::createDeck(Deck& deck){
-    //linha de comando para executar o SQL
-    if(db.executeQuery("INSERT INTO Deck (title, subject) VALUES ('" + deck.getTitle() + "', '" + deck.getSubject() + "');")) 
+    std::string sql = "INSERT INTO Deck (title, subject) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
 
-    {                                                                         
-        deck.setId(getDeckID(deck));// talvez remover esta parte
-    return true;
+    try {
+        if (sqlite3_prepare_v2(db.getDB(), sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+            throw std::runtime_error("Erro ao preparar consulta: " + db.getLastError());
+        }
+
+        // Vincula os valores
+        sqlite3_bind_text(stmt, 1, deck.getTitle().c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, deck.getSubject().c_str(), -1, SQLITE_STATIC);
+
+        // Executa a consulta
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            throw std::runtime_error("Erro ao executar consulta: " + db.getLastError());
+        }
+
+        // Obtém o ID do Deck recém-criado
+        int newId = sqlite3_last_insert_rowid(db.getDB());
+        deck.setId(newId);  // Atualiza o objeto Deck com o novo ID
+        std::cout << "Deck criado com ID: " << newId << std::endl;
+
+        sqlite3_finalize(stmt);
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Erro ao criar Deck: " << e.what() << std::endl;
+        sqlite3_finalize(stmt);
+        return false;
     }
-    return false; //SE OCORRER ERRO IRA LANCAR UM THROW std::runtime_error()
     
 }
 bool DeckDAO::deleteDeck(int id){
@@ -130,16 +151,16 @@ bool DeckDAO::updateDeck(const Deck& deck){
 }
 
 
-//FALTA CRIAR card.h PARA RESOLVER
+//CRIDOS NO CardDAO!
 /*
 bool DeckDAO::addCardToDeck(int deck_id, int card_id);
 bool DeckDAO::deleteCardFromDeck(int deck_id, int card_id);
 
-//FALTA CRIAR card.h PARA RESOLV
+//CRIDOS NO CardDAO!
 std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
 
 //FALTA CRIAR CONSTRUTOR PADRAO
-/*std::array<Deck,50> DeckDAO::getAllDecks(){
+std::array<Deck,50> DeckDAO::getAllDecks(){
     std::array<Deck, 50> decks;
     size_t index = 0;
 
@@ -167,7 +188,7 @@ std::array<Card,50> DeckDAO::getCardsByDeckId(int deck_id);*/
 
     sqlite3_finalize(stmt);
     return decks;
-}*/
+}
 
 
 

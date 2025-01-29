@@ -17,8 +17,10 @@
     "express": "^4.21.2",
     "express-fileupload": "^1.5.1",
     "file-loader": "^6.2.0",
+    "formik": "^2.4.6",
     "fs": "^0.0.1-security",
     "html-webpack-plugin": "^5.6.3",
+    "mkdirp": "^3.0.1",
     "node-addon-api": "^8.3.0",
     "nodemon": "^3.1.9",
     "react": "^19.0.0",
@@ -33,7 +35,8 @@
     "webpack": "^5.97.1",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-dev-server": "^5.2.0",
+    "yup": "^1.6.1"
   },
   "resolutions": {
     "@emotion/react": "^11.14.0"

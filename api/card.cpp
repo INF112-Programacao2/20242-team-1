@@ -24,7 +24,24 @@ Card::Card(std::string front, std::string back, int deck_id){
     this->front = front;
     this->back = back;
     this->deck_id = deck_id;
+
+    Date a;
+    lastReview = a;
 }
+
+/*
+* @brief Construtor da classe Card, que inicia uma carta com frente, verso e id do baralho
+* @param std::string Texto da frente da carta
+* @param std::string Texto do verso da carta
+* @param Date data da proxima revisão
+* @return void
+*/
+Card::Card(std::string front, std::string back, Date lastReview){
+    this->id = 0;
+    this->front = front;
+    this->back = back;
+    this->lastReview = lastReview;
+};
 
 /*
 * @brief Método que retorna o id da carta
@@ -63,21 +80,20 @@ int Card::getDeckId() const{
 }
 
 /*
-* @brief Método que retorna o id do nível de tempo ao qual a carta pertence
-* @param void
-* @return int Id do nível de tempo ao qual a carta pertence
-*/
-int Card::getLevelTimeId() const{
-    return this->levelTime_id;
-}
-
-/*
 * @brief Método que retorna a data da última revisão da carta
 * @param void
 * @return Date Data da última revisão da carta
 */
 Date Card::getLastReview() const{
     return this->lastReview;
+}
+
+int Card::getAudioId() {
+    return -1;
+}
+
+int Card::getImagemId () {
+    return -1;
 }
 
 /*
@@ -114,15 +130,6 @@ void Card::setBack(std::string back){
 */
 void Card::setDeckId(int deck_id){
     this->deck_id = deck_id;
-}
-
-/*
-* @brief Método que atualiza o id do nível de tempo ao qual a carta pertence
-* @param int Id do nível de tempo ao qual a carta pertence
-* @return void
-*/
-void Card::setLevelTimeId(int levelTime_id){
-    this->levelTime_id = levelTime_id;
 }
 
 /*

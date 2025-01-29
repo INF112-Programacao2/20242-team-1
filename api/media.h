@@ -14,10 +14,11 @@ private:
 
 public:
     Media();
-    Media(int id, std::string name, std::string path);
+    Media(std::string name_, std::string path_);
     ~Media() = default;
 
     // ======= Getters =======
+
     int getId() const;
     std::string getName() const;
     std::string getPath() const;
@@ -25,6 +26,7 @@ public:
     std::string getType() const;
 
     // ======= Setters =======
+
     void setId(int id);
     void setName(const std::string& name);
     void setPath(const std::string& path);
@@ -32,6 +34,7 @@ public:
     void setType(const std::string& type);
 
     // ======= Methods =======
+    
     void updateMedia(int id, const std::string& name, const std::string& path);
 };
 

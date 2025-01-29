@@ -1,26 +1,49 @@
 //ARQUIVO TESTE!!!
-//PARA RODAR CODIGO:
-//g++ main.cpp DatabaseConnection.cpp deckdao.cpp ../card.cpp ../deck.cpp sqlite3.dll 
-
+//PARA RODAR CODIGO: 
+//g++ main.cpp DatabaseConnection.cpp deckdao.cpp carddao.cpp cardImageDAO.cpp imageDAO.cpp cardAudioDAO.cpp audioDAO.cpp ../card.cpp ../cardimage.cpp ../cardaudio.cpp ../deck.cpp ../date.cpp ../image.cpp ../audio.cpp ../media.cpp  sqlite3.dll
+// Para o linux: (necessário estar na pasta api)
+// g++ deck.cpp ./DAO/deckdao.cpp ./DAO/DatabaseConnection.cpp ./DAO/main.cpp -o out -lsqlite3
+#include "carddao.h"
+#include "cardImageDAO.h"
+#include "cardAudioDAO.h"
 #include "DatabaseConnection.h"
 #include "deckdao.h"
+#include "imageDAO.h"
+#include "audioDAO.h"
+
 #include "sqlite3.h"
-#include "../card.h"
+
 #include "../deck.h"
+
+#include "../card.h"
+#include "../cardaudio.h"
+#include "../cardimage.h"
+
+
 
 int main (){
     try{
-    DatabaseConnection a;
-    DeckDAO b(a);
-    Deck c("muitoo fodaa","Queee legaaalll");
-    Deck d("oitenta","quarenta");
-    c.setId(2);
-    //b.createDeck(c);
-    //b.createDeck(d);
-    //b.deleteDeck(3);
-    //b.updateDeck(c);
-    Deck e = b.getDeckById(2);
-    b.createDeck(e);
+        DatabaseConnection db("../../dados.db");//mudar para "../dados.db" linux; mudar para "../../dados.db" windows
+        CardAudioDAO CardAudioDAO(db);
+        CardImageDAO CardImageDAO(db);
+        
+        //Image img(10,10,"nome","legenda","path");
+        //CardImage cardd("front","back",1);
+        //cardd.setImage(img);
+        //CardImageDAO.createCardImage(cardd);
+        AudioDAO ad(db);
+        //ad.deleteAudio(2);
+        //Audio au("Casa2","legenda2",10,"caminho2");
+        //CardAudio cad("front2","back2",1);
+        //cad.setAudio(au);
+        CardAudioDAO.getAllCardsAudio();
+        Date data;
+        CardAudioDAO.getAllCardsAudioSortedByDate();
+        CardAudioDAO.getCardsAudioByDate(data,1);
+
+        //CardAudioDAO.deleteCardAudio(2);
+
+
     }catch (const std::exception& e){
         std::cerr << "Excecao capturada: " << e.what() << std::endl;
     }

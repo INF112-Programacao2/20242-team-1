@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
-import { ReactComponent as TrashIcon } from '../assets/icons/trash.svg';
+import DeleteButton from './DeleteButton';
 import { ReactComponent as EditIcon } from '../assets/icons/edit.svg';
 
 const CardsList = (props) => {
@@ -20,11 +20,11 @@ const CardsList = (props) => {
                 {props.cards.map((card, idx) => (
                     <tr key={idx}>
                         <td>{card.front}</td>
-                        <td><Button size='lg' variant='light' onClick={() => navigate(`/card/${card.id}`)}><EditIcon /></Button></td>
-                        <td><Button size='lg' variant='light'><TrashIcon /></Button></td>
+                        <td><Button size='lg' variant='light' onClick={() => navigate(`/${props.type}/edit/${card.id}`)}><EditIcon /></Button></td>
+                        <td><DeleteButton  url={`${props.type}/${card.id}`}/></td>
                     </tr>
                 ))}
-                <tr><td colSpan={3}><Button size='sm' variant='secondary' onClick={() => navigate(`/card`)}> + Novo</Button></td></tr>
+                <tr><td colSpan={3}><Button size='sm' variant='secondary' onClick={() => navigate(`/${props.type}/new/${props.id}`)}> + Novo</Button></td></tr>
             </tbody>
         </Table>
     );

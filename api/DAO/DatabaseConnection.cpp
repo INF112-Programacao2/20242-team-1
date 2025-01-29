@@ -3,6 +3,10 @@
     DatabaseConnection::DatabaseConnection(){
         openConnection();
     }
+    DatabaseConnection::DatabaseConnection(std::string _db_name){
+        db_name=_db_name;
+        openConnection();
+    }
     DatabaseConnection::~DatabaseConnection(){
         closeConnection();
     }
