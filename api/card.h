@@ -25,8 +25,9 @@ class Card{
         std::string getBack() const;
         int getDeckId() const;
         Date getLastReview() const;
-        virtual int getAudioId() ;
-        virtual int getImagemId() ;
+        
+        virtual int getAudioId() = 0;
+        virtual int getImageId() = 0;
 
 
         // ======= Setters =======

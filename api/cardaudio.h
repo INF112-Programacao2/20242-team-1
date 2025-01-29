@@ -18,7 +18,7 @@ class CardAudio : public Card{
         // ======= Getters =======
 
         Audio& getAudio();
-        int getAudioId();
+        virtual int getAudioId() override;
 
         // ======= Setters =======
 

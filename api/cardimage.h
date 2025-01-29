@@ -20,7 +20,7 @@ class CardImage : public Card{
         // ======= Getters =======
 
         Image& getImage();
-        int getImageId();
+        virtual int getImageId() override;
 
 
         // ======= Setters =======
