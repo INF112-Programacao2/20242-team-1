@@ -18,11 +18,11 @@ std::string Audio::getTranscription()
 };
 std::string Audio::getType()
 {
-    return "png";
+    return "webm";
 };
 std::string Audio::pathName()
 {
-    return this->pathName() + std::to_string(this->getId()) + this->getName() + ".png";
+    return this->pathName() + std::to_string(this->getId()) + this->getName() + ".webm";
 };
 // ======= Setters =======
 
