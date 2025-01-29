@@ -61,11 +61,20 @@ Uma aplicação simples e intuitiva para estudo e memorização baseada no conce
 
 ### **Instalação**
 
-1. Instalar Nodejs;
+1. Instalar Nodejs e NPM;
+´sudo apt update ´ -> Atualizar indice de pacotes 
+´curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -´
+´sudo apt install -y nodejs´
 
 2. Instalar o gerenciador de pacotes yarn;
+´npm install -g yarn´
 
-3. Entre no projeto e rode : `yarn` para instalar as dependências;
+4. Instalar SQLITE;
+     ´sudo apt update´
+    ´sudo apt install sqlite3´
+
+
+5. Entre no projeto e rode : `yarn` para instalar as dependências;
 
 ### **Executar**
 
