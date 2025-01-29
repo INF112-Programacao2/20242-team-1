@@ -23,8 +23,8 @@ public:
     std::string getName() const;
     std::string getPath() const;
     size_t getFileSize() const;
-    std::string getType() const;
-
+    virtual std::string getType();
+    virtual std::string pathName();
     // ======= Setters =======
 
     void setId(int id);

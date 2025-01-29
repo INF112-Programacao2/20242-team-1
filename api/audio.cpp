@@ -16,7 +16,14 @@ std::string Audio::getTranscription()
 {
     return this->transcription;
 };
-
+std::string Audio::getType()
+{
+    return "png";
+};
+std::string Audio::pathName()
+{
+    return this->pathName() + std::to_string(this->getId()) + this->getName() + ".png";
+};
 // ======= Setters =======
 
 void Audio::setDurationInSeconds(float durationInSeconds)

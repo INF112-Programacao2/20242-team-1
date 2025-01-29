@@ -22,7 +22,8 @@ class Image : public  Media {
         int getWidth() const;
         int getHeight() const;
         std::string getCaption() const;
-
+        virtual std::string getType() override;
+        virtual std::string pathName() override;
         // ======= Setters =======
 
         void setId(int id);

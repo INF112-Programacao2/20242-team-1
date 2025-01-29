@@ -46,7 +46,6 @@ int Media::getId() const { return id; }
 std::string Media::getName() const { return name; }
 std::string Media::getPath() const { return path; }
 size_t Media::getFileSize() const { return file_size; }
-std::string Media::getType() const { return type; }
 
 // Implementação dos Setters
 
@@ -70,6 +69,13 @@ void Media::setPath(const std::string& newPath) {
         setFileSize(0);
     }
 }
+ std::string Media::getType(){
+    return type;
+ };
+ std::string Media::pathName(){
+    return path + name;
+ };
+
 void Media::setFileSize(size_t newFileSize) { file_size = newFileSize; }
 void Media::setType(const std::string& newType) { type = newType; }
 
